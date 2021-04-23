@@ -8,7 +8,8 @@ public class Puzzle extends Board{
     private int theme;
     private String playdata;
     private boolean hasBeenSolved;
-    private Board puzzleBoard = new Board();
+
+	private Board puzzleBoard = new Board();
 
     public Puzzle(String userName, String name, int theme) {
         this.userName = userName;
@@ -95,7 +96,21 @@ public class Puzzle extends Board{
     public Board getPuzzleBoard() {
         return puzzleBoard;
     }
-
+    public String getPlaydata() {
+		return playdata;
+	}
+	public void setPlaydata(String playdata) {
+		this.playdata = playdata;
+	}
+	public boolean isHasBeenSolved() {
+		return hasBeenSolved;
+	}
+	public void setHasBeenSolved(boolean hasBeenSolved) {
+		this.hasBeenSolved = hasBeenSolved;
+	}
+	public void setPuzzleBoard(Board puzzleBoard) {
+		this.puzzleBoard = puzzleBoard;
+	}
     @Override
     public String toString() {
         return "Puzzle{" +
