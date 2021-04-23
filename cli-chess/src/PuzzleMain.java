@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,7 +9,7 @@ public class PuzzleMain {
         this.puzzles = new ArrayList<Puzzle>(15);
     }
 
-    public void start(){
+    public void start() throws IOException {
         this.puzzles.add(new Puzzle("1", "A", 1));
         this.puzzles.add(new Puzzle("2", "B", 2));
         this.puzzles.add(new Puzzle("3", "C", 3));

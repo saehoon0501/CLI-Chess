@@ -1,4 +1,4 @@
-public class Puzzle extends Board{
+public class Puzzle {
     private String userName;
     private String name;
     private int theme;
@@ -6,10 +6,27 @@ public class Puzzle extends Board{
     private boolean hasBeenSolved;
     private Board puzzleBoard;
 
+    @Override
+    public String toString() {
+        return "Puzzle{" +
+                "userName='" + userName + '\'' +
+                ", name='" + name + '\'' +
+                ", theme=" + theme +
+                ", hasBeenSolved=" + hasBeenSolved +
+                '}';
+    }
+
     public Puzzle(String userName, String name, int theme) {
         this.userName = userName;
         this.name = name;
         this.theme = theme;
+        this.playdata = null;
+        this.hasBeenSolved = false;
+        this.puzzleBoard = new Board();
+    }
+
+    public void setPuzzleBoard(Board puzzleBoard) {
+        this.puzzleBoard = puzzleBoard;
     }
 
     public Puzzle() {
@@ -17,6 +34,23 @@ public class Puzzle extends Board{
         this.name = null;
         this.theme = 0;
         this.playdata = null;
+        this.hasBeenSolved = false;
+        this.puzzleBoard = new Board();
+    }
+    public String getPlaydata() {
+        return playdata;
+    }
+
+    public void setPlaydata(String playdata) {
+        this.playdata = playdata;
+    }
+
+    public boolean isHasBeenSolved() {
+        return hasBeenSolved;
+    }
+
+    public void setHasBeenSolved(boolean hasBeenSolved) {
+        this.hasBeenSolved = hasBeenSolved;
     }
 
     public void setUserName(String userName) {
@@ -47,12 +81,4 @@ public class Puzzle extends Board{
         return puzzleBoard;
     }
 
-    @Override
-    public String toString() {
-        return "Puzzle{" +
-                "userName='" + userName + '\'' +
-                ", name='" + name + '\'' +
-                ", theme='" + theme + '\'' +
-                '}';
-    }
 }
