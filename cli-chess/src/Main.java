@@ -1,9 +1,18 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.Scanner;
+
+import javax.xml.transform.stream.StreamResult;
 
 public class Main {
     public static void main(String[] args) {
-        Puzzle puzzle = new Puzzle();
-        puzzle.printBoard();
+//        Puzzle puzzle = new Puzzle();
+//        puzzle.printBoard();
+    	Puzzle puzzle= new Puzzle("example.txt");
+    	System.out.println(puzzle.getName());
+    	System.out.println(puzzle.getUserName());
+    	System.out.println(puzzle.getTheme());
 //        Board Chessboard = Controller.createBoard(); //Make the board
 //        System.out.println("");
 //        Chessboard.printBoard(); //Print the board and some information about the game
