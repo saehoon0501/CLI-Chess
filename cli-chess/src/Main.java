@@ -2,8 +2,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Puzzle puzzle = new Puzzle();
-        puzzle.printBoard();
+      
 //        Board Chessboard = Controller.createBoard(); //Make the board
 //        System.out.println("");
 //        Chessboard.printBoard(); //Print the board and some information about the game
