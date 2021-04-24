@@ -27,21 +27,59 @@ public class Gamepiece{
 
     public boolean setPiece(String newPiece){
 
-        if(newPiece.length() > 1){
+        if(newPiece.equalsIgnoreCase("p") || newPiece.equalsIgnoreCase("Pawn")){
+            if (this.getPlayer().equals("w")){
+                newPiece = "♟";
+            }else{
+                newPiece = "♙";
+            }
+            this.piece = newPiece;
+            return true;
+        }else if(newPiece.equalsIgnoreCase("r")|| newPiece.equalsIgnoreCase("Rook")){
+            if (this.getPlayer().equals("w")){
+                newPiece = "♜";
+            }else{
+                newPiece = "♖";
+            }
+            this.piece = newPiece;
+            return true;
+        }else if  (newPiece.equalsIgnoreCase("n")|| newPiece.equalsIgnoreCase("Knight")){
+            if (this.getPlayer().equals("w")){
+                newPiece = "♞";
+            }else{
+                newPiece = "♘";
+            }
+            this.piece = newPiece;
+            return true;
+        }else if (newPiece.equalsIgnoreCase("b")|| newPiece.equalsIgnoreCase("Bishop")){
+            if (this.getPlayer().equals("w")){
+                newPiece = "♝︎";
+            }else{
+                newPiece = "♗";
+            }
+            this.piece = newPiece;
+            return true;
+        }else if (newPiece.equalsIgnoreCase("q")|| newPiece.equalsIgnoreCase("Queen")){
+            if (this.getPlayer().equals("w")){
+                newPiece = "♛";
+            }else{
+                newPiece = "♕";
+            }
+            newPiece = "q";
+            this.piece = newPiece;
+            return true;
+        }else if (newPiece.equalsIgnoreCase("k")|| newPiece.equalsIgnoreCase("King")){
+            if (this.getPlayer().equals("w")){
+                newPiece = "♚";
+            }else{
+                newPiece = "♔";
+            }
+            this.piece = newPiece;
+            return true;
+        }else {
             return false;
         }
 
-        if(!newPiece.equalsIgnoreCase("p") &&
-                !newPiece.equalsIgnoreCase("r") &&
-                !newPiece.equalsIgnoreCase("n") &&
-                !newPiece.equalsIgnoreCase("b") &&
-                !newPiece.equalsIgnoreCase("q") &&
-                !newPiece.equalsIgnoreCase("k")){
-            return false;
-        }
-
-        this.piece = newPiece;
-        return true;
     }
 
     public String getPosition(){
@@ -49,7 +87,6 @@ public class Gamepiece{
     }
 
     public boolean setPosition(String newPosition){
-
         if(newPosition.length() != 2){
             return false;
         }
