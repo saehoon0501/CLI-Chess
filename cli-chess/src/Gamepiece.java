@@ -27,56 +27,32 @@ public class Gamepiece{
 
     public boolean setPiece(String newPiece){
 
-        if(newPiece.equalsIgnoreCase("p") || newPiece.equalsIgnoreCase("Pawn")){
-            if (this.getPlayer().equals("w")){
+        if(newPiece.equalsIgnoreCase("♟") ||newPiece.equalsIgnoreCase("p") || newPiece.equalsIgnoreCase("Pawn")|| newPiece.equalsIgnoreCase("폰")){
                 newPiece = "♟";
-            }else{
-                newPiece = "♙";
-            }
             this.piece = newPiece;
             return true;
-        }else if(newPiece.equalsIgnoreCase("r")|| newPiece.equalsIgnoreCase("Rook")){
-            if (this.getPlayer().equals("w")){
-                newPiece = "♜";
-            }else{
-                newPiece = "♖";
-            }
+        }else if(newPiece.equalsIgnoreCase("♜") || newPiece.equalsIgnoreCase("r")|| newPiece.equalsIgnoreCase("Rook")|| newPiece.equalsIgnoreCase("룩")){
+               newPiece = "♜";
             this.piece = newPiece;
             return true;
-        }else if  (newPiece.equalsIgnoreCase("n")|| newPiece.equalsIgnoreCase("Knight")){
-            if (this.getPlayer().equals("w")){
+        }else if  (newPiece.equalsIgnoreCase("♞") || newPiece.equalsIgnoreCase("n")|| newPiece.equalsIgnoreCase("Knight")|| newPiece.equalsIgnoreCase("나이트")){
                 newPiece = "♞";
-            }else{
-                newPiece = "♘";
-            }
             this.piece = newPiece;
             return true;
-        }else if (newPiece.equalsIgnoreCase("b")|| newPiece.equalsIgnoreCase("Bishop")){
-            if (this.getPlayer().equals("w")){
+        }else if (newPiece.equalsIgnoreCase("♝") || newPiece.equalsIgnoreCase("b")|| newPiece.equalsIgnoreCase("Bishop")|| newPiece.equalsIgnoreCase("비숍")){
                 newPiece = "♝︎";
-            }else{
-                newPiece = "♗";
-            }
             this.piece = newPiece;
             return true;
-        }else if (newPiece.equalsIgnoreCase("q")|| newPiece.equalsIgnoreCase("Queen")){
-            if (this.getPlayer().equals("w")){
+        }else if (newPiece.equalsIgnoreCase("♛") || newPiece.equalsIgnoreCase("q")|| newPiece.equalsIgnoreCase("Queen")|| newPiece.equalsIgnoreCase("퀸")){
                 newPiece = "♛";
-            }else{
-                newPiece = "♕";
-            }
-            newPiece = "q";
             this.piece = newPiece;
             return true;
-        }else if (newPiece.equalsIgnoreCase("k")|| newPiece.equalsIgnoreCase("King")){
-            if (this.getPlayer().equals("w")){
+        }else if (newPiece.equalsIgnoreCase("♚") || newPiece.equalsIgnoreCase("k")|| newPiece.equalsIgnoreCase("King")|| newPiece.equalsIgnoreCase("킹")){
                 newPiece = "♚";
-            }else{
-                newPiece = "♔";
-            }
             this.piece = newPiece;
             return true;
         }else {
+            this.piece = null;
             return false;
         }
 
@@ -148,7 +124,7 @@ public class Gamepiece{
 
         //CASE: Pawn
 
-        if(this.getPiece().equalsIgnoreCase("P")){
+        if(this.getPiece().equalsIgnoreCase("♟")){
             int pieceI = Controller.rankToInd(this.getPosition());
             int pieceJ = Controller.fileToInd(this.getPosition());
             String tempMove = "";
@@ -262,7 +238,7 @@ public class Gamepiece{
 
         }
 
-        if(this.getPiece().equalsIgnoreCase("R")){ //CASE: Rook
+        if(this.getPiece().equalsIgnoreCase("♜")){ //CASE: Rook
             int pieceI = Controller.rankToInd(this.getPosition());
             int pieceJ = Controller.fileToInd(this.getPosition());
             String tempMove = "";
@@ -401,7 +377,7 @@ public class Gamepiece{
             }
         }
 
-        if(this.getPiece().equalsIgnoreCase("N")){ //CASE: knight
+        if(this.getPiece().equalsIgnoreCase("♞")){ //CASE: knight
             int pieceI = Controller.rankToInd(this.getPosition());
             int pieceJ = Controller.fileToInd(this.getPosition());
             String tempMove = "";
@@ -571,7 +547,7 @@ public class Gamepiece{
             }
         }
 
-        if(this.getPiece().equalsIgnoreCase("B")){ //Case: Bishop
+        if(this.getPiece().equalsIgnoreCase("♝")){ //Case: Bishop
             int pieceI = Controller.rankToInd(this.getPosition());
             int pieceJ = Controller.fileToInd(this.getPosition());
             String tempMove = "";
@@ -784,7 +760,7 @@ public class Gamepiece{
             }
         }
 
-        if(this.getPiece().equalsIgnoreCase("Q")){ //CASE Queen
+        if(this.getPiece().equalsIgnoreCase("♛")){ //CASE Queen
             int pieceI = Controller.rankToInd(this.getPosition());
             int pieceJ = Controller.fileToInd(this.getPosition());
             String tempMove = "";
@@ -1125,7 +1101,7 @@ public class Gamepiece{
             }
         }
 
-        if(this.getPiece().equalsIgnoreCase("K")){ //Case king
+        if(this.getPiece().equalsIgnoreCase("♚")){ //Case king
             int pieceI = Controller.rankToInd(this.getPosition());
             int pieceJ = Controller.fileToInd(this.getPosition());
             String tempMove = "";

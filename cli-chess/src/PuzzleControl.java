@@ -1,9 +1,13 @@
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class PuzzleControl {
     private Puzzle puzzleFile;
+    Puzzle reset = new Puzzle();
     private boolean control;
     private boolean white;
 
@@ -75,79 +79,159 @@ public class PuzzleControl {
 
     //기물 선택 배치 모드 각 command 실행 Place, White, Black, Delete, Back, Next, Help, Exit
     public void command1(String input) throws IOException {
-        if(input.length() > 4){
-            if(input.substring(0,5).equalsIgnoreCase("Place")){//inputarray[0] = 기물, inputarray[1]= 위치로 가공
-                StringBuilder s = new StringBuilder(input);
-                s.delete(0,5);
-                s.trimToSize();
-                this.place(this.puzzleFile.getPuzzleBoard(), s.toString().trim().split(" "), this.white);
-            }else if (input.equalsIgnoreCase("Delete") || input.equalsIgnoreCase("Del") || input.equalsIgnoreCase("삭제")) {
-                System.out.println(input);
-                this.delete(this.puzzleFile.getPuzzleBoard(), input.split(" "));
-            }
-        }
-        if(input.substring(0,2).equalsIgnoreCase("Pl")){
-            StringBuilder s = new StringBuilder(input);
-            s.delete(0,2);
-            System.out.println(s);
-            s.trimToSize();
-            this.place(this.puzzleFile.getPuzzleBoard(), s.toString().trim().split(" "), this.white);
-        }
-        if(input.equalsIgnoreCase("White") || input.equalsIgnoreCase("Wt") || input.equals("백")){
-            this.white = true;
-        }else if (input.equalsIgnoreCase("Black") || input.equalsIgnoreCase("Bk") || input.equals("흑")) {
-            this.white = false;
-        }else if (input.equalsIgnoreCase("Help") || input.equalsIgnoreCase("H") || input.equalsIgnoreCase("도움")) {
+        try{
+            if(input.equalsIgnoreCase("White") || input.equalsIgnoreCase("Wt") || input.equals("백")){
+                this.white = true;
+            }else if (input.equalsIgnoreCase("Black") || input.equalsIgnoreCase("Bk") || input.equals("흑")) {
+                this.white = false;
+            }else if (input.equalsIgnoreCase("Help") || input.equalsIgnoreCase("H") || input.equalsIgnoreCase("도움")) {
+                System.out.println("기물 선택 형식 : <비개행공백열0><기물지정자>");
+                System.out.println("기물 배치 형식 : <비개행공백열0><좌표입력>");
+                System.out.println("이니셜 R    P    B      Q     K    N");
+                System.out.println("풀네임 Rook Pawn Bishop Queen King Knignt");
+                System.out.println("한글   룩   폰    비숍    퀸     킹   나이트\n");
+            }else if (input.equalsIgnoreCase("Back") || input.equalsIgnoreCase("Bc") || input.equalsIgnoreCase("뒤로")) {
+                this.start();
+            }else if (input.equalsIgnoreCase("Exit") || input.equalsIgnoreCase("Ex") || input.equalsIgnoreCase("종료")) {
 
-        }else if (input.equalsIgnoreCase("Back") || input.equalsIgnoreCase("Bc") || input.equalsIgnoreCase("뒤로")) {
-              this.start();
-        }else if (input.equalsIgnoreCase("Exit") || input.equalsIgnoreCase("Ex") || input.equalsIgnoreCase("종료")) {
-
-        }else if (input.equalsIgnoreCase("Next") || input.equalsIgnoreCase("Nx") || input.equalsIgnoreCase("다음")) {
-            if(this.next()){
+            }else if (input.equalsIgnoreCase("Next") || input.equalsIgnoreCase("Nx") || input.equalsIgnoreCase("다음")) {
+                if(this.next()){
                     this.puzzleFile.getPuzzleBoard().makePieceList();
-                this.control = false;
+                    this.control = false;
                 }else {
                     System.out.println("최소 승리 조건에 불충분");
-                this.createBoard();
                 }
-        }else if (input.substring(0,3).equalsIgnoreCase("Del") || input.equalsIgnoreCase("삭제")) {
-            StringBuilder s = new StringBuilder(input);
-            s.delete(0,3);
-            input = s.toString().trim();
-            this.delete(this.puzzleFile.getPuzzleBoard(), input.split(" "));
-        }else{
-            System.out.println("잘못된 입력입니다. 다시 입력하세요.");
+            }else if (input.substring(0,2).equalsIgnoreCase("삭제")){
+                StringBuilder s = new StringBuilder(input);
+                s.delete(0,2);
+                input = s.toString().trim();
+                this.delete(this.puzzleFile.getPuzzleBoard(), input.split(" "));
+            } else if(input.length() > 4){
+                if(input.substring(0,5).equalsIgnoreCase("Place")){//inputarray[0] = 기물, inputarray[1]= 위치로 가공
+                    StringBuilder s = new StringBuilder(input);
+                    s.delete(0,5);
+                    s.trimToSize();
+                    this.place(this.puzzleFile.getPuzzleBoard(), s.toString().trim().split(" "), this.white);
+                }else if(input.substring(0,2).equalsIgnoreCase("Pl") ||input.substring(0,2).equalsIgnoreCase("배치")){
+                    StringBuilder s = new StringBuilder(input);
+                    s.delete(0,2);
+                    System.out.println(s);
+                    s.trimToSize();
+                    this.place(this.puzzleFile.getPuzzleBoard(), s.toString().trim().split(" "), this.white);
+                }else if (input.substring(0,6).equalsIgnoreCase("Delete")) {
+                    StringBuilder s = new StringBuilder(input);
+                    s.delete(0,6);
+                    input = s.toString();
+                    this.delete(this.puzzleFile.getPuzzleBoard(), input.trim().split(" "));
+                }else if (input.substring(0,3).equalsIgnoreCase("Del")) {
+                    StringBuilder s = new StringBuilder(input);
+                    s.delete(0,3);
+                    input = s.toString();
+                    this.delete(this.puzzleFile.getPuzzleBoard(), input.trim().split(" "));
+                }
+            }else {
+                System.out.println("존재하지 않는 명령어 입니다.");
+                System.out.println("             명령어 표    ");
+                System.out.println("        대소문자 구별 없음 ");
+                System.out.println("Black White Delete Place Next Help");
+                System.out.println(" Bk    Wt     Del   Pl    Nx    H");
+                System.out.println(" 흑     백     삭제   배치   다음   도움\n");
+            }
+        }catch (StringIndexOutOfBoundsException e){
+            System.out.println("존재하지 않는 명령어 입니다.");
+            System.out.println("             명령어 표    ");
+            System.out.println("        대소문자 구별 없음 ");
+            System.out.println("Black White Delete Place Next Help");
+            System.out.println(" Bk    Wt     Del   Pl    Nx    H");
+            System.out.println(" 흑     백     삭제   배치   다음   도움\n");
         }
+
     }
 
     public void place(Board gameBoard, String inputarray[], boolean white){ //기물 배치 커맨드
-        System.out.println("배치 실행됨");
-        String piece = inputarray[0];
-        int j = Controller.fileToInd(inputarray[1]);
-        int i = Controller.rankToInd(inputarray[1]);
-        if (white){
-            Gamepiece temp = new Gamepiece();
-            temp.setPiece(piece);
-            temp.setPlayer("w");
-            String pos = Controller.indToPos(i, j);
-            temp.setPosition(pos);
-            gameBoard.GBoard[i][j] = temp;
-        }else{
-            Gamepiece temp = new Gamepiece();
-            temp.setPiece(piece);
-            temp.setPlayer("b");
-            String pos = Controller.indToPos(i, j);
-            temp.setPosition(pos);
-            gameBoard.GBoard[i][j] = temp;
+        try{
+            String piece = inputarray[0];
+
+            if(inputarray[1].equals(" ") || inputarray[0].equals(" ")){
+                System.out.println("기물 선택 형식 : <비개행공백열0><기물지정자>");
+                System.out.println("기물 배치 형식 : <비개행공백열0><좌표입력>");
+                System.out.println("이니셜 R    P    B      Q     K    N");
+                System.out.println("풀네임 Rook Pawn Bishop Queen King Knignt");
+                System.out.println("한글   룩   폰    비숍    퀸     킹   나이트\n");
+            }
+            if (inputarray[1].length() != 2 || (inputarray[1].substring(0,1).compareToIgnoreCase("h") > 0) || !Character.isLetter(inputarray[1].charAt(0))){
+                System.out.println("기물 선택 형식 : <비개행공백열0><기물지정자>");
+                System.out.println("기물 배치 형식 : <비개행공백열0><좌표입력>");
+                System.out.println("이니셜 R    P    B      Q     K    N");
+                System.out.println("풀네임 Rook Pawn Bishop Queen King Knignt");
+                System.out.println("한글   룩   폰    비숍    퀸     킹   나이트\n");
+            }else if((!Character.isDigit(inputarray[1].charAt(1))) ||
+                    (Integer.parseInt(inputarray[1].substring(1,2)) > 8) ||
+                    (Integer.parseInt(inputarray[1].substring(1,2)) < 1)){
+                System.out.println("기물 선택 형식 : <비개행공백열0><기물지정자>");
+                System.out.println("기물 배치 형식 : <비개행공백열0><좌표입력>");
+                System.out.println("이니셜 R    P    B      Q     K    N");
+                System.out.println("풀네임 Rook Pawn Bishop Queen King Knignt");
+                System.out.println("한글   룩   폰    비숍    퀸     킹   나이트\n");
+            } else{
+                int j = Controller.fileToInd(inputarray[1]);
+                int i = Controller.rankToInd(inputarray[1]);
+                if (white){
+                    Gamepiece temp = new Gamepiece();
+                    temp.setPiece(piece);
+                    if (temp.setPiece(piece)){
+                        temp.setPlayer("w");
+                        String pos = Controller.indToPos(i, j);
+                        temp.setPosition(pos);
+                        reset.getPuzzleBoard().GBoard[i][j] = temp;
+                        gameBoard.GBoard[i][j] = temp;
+                        gameBoard.GBoard[i][j].createMoveSet(this.reset.getPuzzleBoard());
+                        gameBoard.GBoard[i][j].createMoveSet(this.puzzleFile.getPuzzleBoard());
+                    }else {
+                        System.out.println("기물 선택 형식 : <비개행공백열0><기물지정자>");
+                        System.out.println("기물 배치 형식 : <비개행공백열0><좌표입력>");
+                        System.out.println("이니셜 R    P    B      Q     K    N");
+                        System.out.println("풀네임 Rook Pawn Bishop Queen King Knignt");
+                        System.out.println("한글   룩   폰    비숍    퀸     킹   나이트\n");
+                    }
+                }else{
+                    Gamepiece temp = new Gamepiece();
+                    temp.setPiece(piece);
+                    if (temp.setPiece(piece)){
+                        temp.setPlayer("b");
+                        String pos = Controller.indToPos(i, j);
+                        temp.setPosition(pos);
+                        gameBoard.GBoard[i][j] = temp;
+                        reset.getPuzzleBoard().GBoard[i][j] = temp;
+                        gameBoard.GBoard[i][j].createMoveSet(this.reset.getPuzzleBoard());
+                        gameBoard.GBoard[i][j].createMoveSet(this.puzzleFile.getPuzzleBoard());
+                    }else {
+                        System.out.println("<비개행공백열0><기물지정자>");
+                        System.out.println("이니셜 R    P    B      Q     K    N");
+                        System.out.println("풀네임 Rook Pawn Bishop Queen King Knignt");
+                        System.out.println("한글   룩   폰    비숍    퀸     킹   나이트");
+                    }
+                }
+            }
+        }catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("존재하지 않는 명령어 입니다.");
         }
+
+
     }
 
     public void delete(Board gameBoard, String inputarray[]){ // 기물 삭제 커맨드
-        int i = Controller.rankToInd(inputarray[0]);
-        int j = Controller.fileToInd(inputarray[0]);
-
-        gameBoard.GBoard[i][j] = null;
+        if (inputarray[0].length() != 2 || (inputarray[0].substring(0,1).compareToIgnoreCase("h") > 0) || !Character.isLetter(inputarray[0].charAt(0))){
+            System.out.println("유효하지 않은 좌표입니다");
+        }else if((!Character.isDigit(inputarray[0].charAt(1))) ||
+                (Integer.parseInt(inputarray[0].substring(1,2)) > 8) ||
+                (Integer.parseInt(inputarray[0].substring(1,2)) < 1)){
+            System.out.println("유효하지 않은 좌표입니다");
+        }else {
+            int i = Controller.rankToInd(inputarray[0]);
+            int j = Controller.fileToInd(inputarray[0]);
+            gameBoard.GBoard[i][j] = null;
+        }
     }
 
     public boolean next(){ //퍼즐 성립 최소 조건 6가지 확인 후 진행 여부 판단.
@@ -162,23 +246,25 @@ public class PuzzleControl {
         int bRookcount = 0;
         int bElse = 0;
         this.makePieceList();
+
         for(String piece : this.puzzleFile.getPuzzleBoard().whitePieceList) { // 백에 킹의 수가 2개 혹은 0보다 작으면 not valid
-            if (piece.equalsIgnoreCase("K")) {
+            if (piece.equalsIgnoreCase("♚")) {
                 wKingCount = wKingCount + 1;
-            } else if (piece.equalsIgnoreCase("B")) {
+            } else if (piece.equalsIgnoreCase("♝")) {
                 wBishopcount = wBishopcount + 1;
-            } else if (piece.equalsIgnoreCase("N")) {
+            } else if (piece.equalsIgnoreCase("♞")) {
                 wKnightcount = wKnightcount + 1;
             } else {
                 wElse = wElse + 1;
             }
         }
+
         for (String piece2 : this.puzzleFile.getPuzzleBoard().blackPieceList){
-            if (piece2.equalsIgnoreCase("K")){
+            if (piece2.equalsIgnoreCase("♚")){
                 bKingCount = bKingCount + 1;
-            }else if (piece2.equalsIgnoreCase("B")){
+            }else if (piece2.equalsIgnoreCase("♝")){
                 bBishopcount = bBishopcount + 1;
-            }else if (piece2.equalsIgnoreCase("N")){
+            }else if (piece2.equalsIgnoreCase("♞")){
                 bKnightcount = bKnightcount + 1;
             }else {
                 bElse = bElse + 1;
@@ -186,28 +272,50 @@ public class PuzzleControl {
         }
 
         if (wKingCount != 1 || bKingCount != 1){ //킹이 양쪽에 하나 존재 하지 않으면 모두 false
-            System.out.println(wKingCount);
-            System.out.println(bKingCount);
-            return false;}
-//        }else if (wElse == 0 && bElse == 0){ // 킹,나이트,비숍 제외 다른 기물이 없는 경우
-//            if (wBishopcount > 1 || bBishopcount > 1){ // 한쪽에 서로 칸 색이 다른 비숍 2개이면 ok
-////                if (diffcolor()){
-////                    return true;
-////                }
-//                return false;
-//            }
-//            return false;
-//        }
+            return false;
+        }else if (wElse == 0 && bElse == 0){ // 킹,나이트,비숍 제외 다른 기물이 없는 경우
+            if (wBishopcount > 1 || bBishopcount > 1){ // 한쪽에 서로 칸 색이 다른 비숍 2개이면 ok
+                if (diffcolor()){
+                    return true;
+                }
+                return false;
+            }else if((wBishopcount > 0 && wKnightcount >0) || (bBishopcount > 0 && bKnightcount > 0)){
+                return true;
+            }
+            return false;
+        }
         return true;
     }
 
-//    public boolean diffcolor(){
-//        Gamepiece piece1 = new Gamepiece();
-//        Gamepiece piece2 = new Gamepiece();
-//        for(String piece : this.puzzleFile.getPuzzleBoard().whitePieceList){
-//
-//        }
-//    }
+    public boolean diffcolor(){
+        Gamepiece gamepiece1 = new Gamepiece();
+        Gamepiece gamepiece2 = new Gamepiece();
+        Gamepiece gamepiece3 = new Gamepiece();
+        Gamepiece gamepiece4 = new Gamepiece();
+        for(int i = 0;i<8;i++) {
+            for (int j = 0; j < 8; j++) {
+                if (this.puzzleFile.getPuzzleBoard().GBoard[i][j].getPiece().equals("♝︎") && this.puzzleFile.getPuzzleBoard().GBoard[i][j].getPlayer().equals("w︎")) {
+                    if (i%2 == 0 && j%2 ==0){
+                        gamepiece1 = this.puzzleFile.getPuzzleBoard().GBoard[i][j];
+                    }else if(i%2 == 1 && j%2== 1){
+                        gamepiece2 = this.puzzleFile.getPuzzleBoard().GBoard[i][j];
+                    }
+                }else if(this.puzzleFile.getPuzzleBoard().GBoard[i][j].getPiece().equals("♝︎") && this.puzzleFile.getPuzzleBoard().GBoard[i][j].getPlayer().equals("b")) {
+                    if (i%2 == 0 && j%2 ==0){
+                        gamepiece3 = this.puzzleFile.getPuzzleBoard().GBoard[i][j];
+                    }else if(i%2 == 1 && j%2== 1){
+                        gamepiece4 = this.puzzleFile.getPuzzleBoard().GBoard[i][j];
+                    }
+
+                }
+            }
+        }
+        if (gamepiece1.getPiece() == gamepiece2.getPiece() || gamepiece3.getPiece() == gamepiece4.getPiece()){
+            return true;
+        }else {
+            return false;
+        }
+    }
 
     public void makePieceList(){
         for(int i = 0;i<8;i++){
@@ -230,32 +338,66 @@ public class PuzzleControl {
     //3번째 움직임 설정
     public void setPlay(){
         int count = 0;
-        String data = this.puzzleFile.getPlaydata();
+        String data ="";
+        Puzzle result = this.puzzleFile;
+        Stack<Puzzle> temp = new Stack<Puzzle>();
+
         while (this.puzzleFile.getTheme() - count != 0){
-            int time = this.puzzleFile.getTheme() - count;
             System.out.println("퍼즐 정답 움직임을 설정해 주세요");
             if(white){
-                System.out.println("\t\t\t\t\t 백 차례" + "남은 턴 횟수 :" + time);
+                count++;
+                int time = (this.puzzleFile.getTheme() - count);
+                System.out.println("\t\t\t\t 백 차례" + "남은 턴 횟수 :" + time);
             }else{
-                System.out.println("\t\t\t\t\t 흑 차례");
+                int time = (this.puzzleFile.getTheme() - count);
+                System.out.println("\t\t\t\t 흑 차례" + "남은 턴 횟수 :" + time);
             }
             Scanner scanner = new Scanner(System.in);
-            String move = scanner.nextLine();
-            data = data +"," + move;
-            String moveToken[] = move.split(" ");
-            Board temp = this.puzzleFile.getPuzzleBoard();
-            boolean canMove = Controller.isValidMove(moveToken[0], moveToken[1], temp, white);
-                if(canMove == false){
-                    continue;
+            String input = scanner.nextLine();
+            input = input.trim();
+            String moveToken[] = input.split(" ");
+            try {
+                if (input.equalsIgnoreCase("Reset") || input.equalsIgnoreCase("Re") || input.equals("초기화")) {
+                    System.out.println("초기화 실행");
+                    count = 0;
+                    data ="";
+                    white = false;
+                    result.setPuzzleBoard(reset.getPuzzleBoard());
+                    result.getPuzzleBoard().printBoard();
+                }else if (input.equalsIgnoreCase("Last") || input.equalsIgnoreCase("L") || input.equals("다시")){
+                    count = count - 1;
+                    if (count < 0 ){
+                        System.out.println("움직임을 먼저 설정해주세요.");
+                        count = count + 1;
+                    }else {
+                        data = this.puzzleFile.getPlaydata();
+                        white = !white;
+                    }
+                }else if (input.equalsIgnoreCase("Next") || input.equalsIgnoreCase("Nx") || input.equals("다음")){
+
+                }else if(input.equalsIgnoreCase("Help") || input.equalsIgnoreCase("H") || input.equals("도움")){
+
+                }else{
+                    boolean canMove = Controller.isValidMove(moveToken[0], moveToken[1], result.getPuzzleBoard(), white);
+                    if(canMove == false){
+                        continue;
+                    }
+                    this.puzzleFile.setPuzzleBoard(Controller.processMove(moveToken[0], moveToken[1], result.getPuzzleBoard(), white));
+                    data = data + input +",";
+                    this.puzzleFile.setPlaydata(data);
+                    result.getPuzzleBoard().printBoard();
+                    temp.push(result);
+                    white = !white;
+                    reset.getPuzzleBoard().printBoard();
                 }
-            temp = Controller.processMove(moveToken[0], moveToken[1], temp, white);
-            temp.printBoard();
-            white = !white;
-            count++;
-            continue;
+            }catch (ArrayIndexOutOfBoundsException e){
+                System.out.println("존재하지 않는 명령어 입니다.");
+            }
         }
+        this.puzzleFile.setPuzzleBoard(result.getPuzzleBoard());
         this.puzzleFile.setPlaydata(data);
     }
+
     //4번째 파일 이름 선택 후 data output in String format using java.io
 
 
