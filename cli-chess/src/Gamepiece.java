@@ -27,27 +27,27 @@ public class Gamepiece{
 
     public boolean setPiece(String newPiece){
 
-        if(newPiece.equalsIgnoreCase("p") || newPiece.equalsIgnoreCase("Pawn")){
+        if(newPiece.equalsIgnoreCase("p") || newPiece.equalsIgnoreCase("Pawn")|| newPiece.equalsIgnoreCase("폰")){
                 newPiece = "♟";
             this.piece = newPiece;
             return true;
-        }else if(newPiece.equalsIgnoreCase("r")|| newPiece.equalsIgnoreCase("Rook")){
+        }else if(newPiece.equalsIgnoreCase("r")|| newPiece.equalsIgnoreCase("Rook")|| newPiece.equalsIgnoreCase("룩")){
                newPiece = "♜";
             this.piece = newPiece;
             return true;
-        }else if  (newPiece.equalsIgnoreCase("n")|| newPiece.equalsIgnoreCase("Knight")){
+        }else if  (newPiece.equalsIgnoreCase("n")|| newPiece.equalsIgnoreCase("Knight")|| newPiece.equalsIgnoreCase("나이트")){
                 newPiece = "♞";
             this.piece = newPiece;
             return true;
-        }else if (newPiece.equalsIgnoreCase("b")|| newPiece.equalsIgnoreCase("Bishop")){
+        }else if (newPiece.equalsIgnoreCase("b")|| newPiece.equalsIgnoreCase("Bishop")|| newPiece.equalsIgnoreCase("비숍")){
                 newPiece = "♝︎";
             this.piece = newPiece;
             return true;
-        }else if (newPiece.equalsIgnoreCase("q")|| newPiece.equalsIgnoreCase("Queen")){
+        }else if (newPiece.equalsIgnoreCase("q")|| newPiece.equalsIgnoreCase("Queen")|| newPiece.equalsIgnoreCase("퀸")){
                 newPiece = "♛";
             this.piece = newPiece;
             return true;
-        }else if (newPiece.equalsIgnoreCase("k")|| newPiece.equalsIgnoreCase("King")){
+        }else if (newPiece.equalsIgnoreCase("k")|| newPiece.equalsIgnoreCase("King")|| newPiece.equalsIgnoreCase("킹")){
                 newPiece = "♚";
             this.piece = newPiece;
             return true;

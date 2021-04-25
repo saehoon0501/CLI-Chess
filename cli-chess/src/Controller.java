@@ -241,31 +241,31 @@ public class Controller{
     public static boolean isValidMove(String fromPos, String toPos, Board gameBoard, boolean isWhiteTurn){
 
         if((fromPos.length() != 2) || (toPos.length() != 2)){
-            System.out.println("Invalid move entry format. Please try again.");
+            System.out.println("잘못된 형식입니다. 다시 시도 하세요.");
             return false;
         }
 
         if((!Character.isLetter(fromPos.charAt(0))) || (fromPos.substring(0,1).compareToIgnoreCase("h") > 0)){
-            System.out.println("Move entry out of bounds. Please try again.");
+            System.out.println("잘못된 형식입니다. 다시 시도 하세요.");
             return false;
         }
 
         if((!Character.isLetter(toPos.charAt(0))) || (toPos.substring(0,1).compareToIgnoreCase("h") > 0)){
-            System.out.println("Move entry out of bounds. Please try again.");
+            System.out.println("잘못된 형식입니다. 다시 시도 하세요.");
             return false;
         }
 
         if((!Character.isDigit(fromPos.charAt(1))) ||
                 (Integer.parseInt(fromPos.substring(1,2)) > 8) ||
                 (Integer.parseInt(fromPos.substring(1,2)) < 1)){
-            System.out.println("Move entry out of bounds. Please try again.");
+            System.out.println("잘못된 형식입니다. 다시 시도 하세요.");
             return false;
         }
 
         if((!Character.isDigit(toPos.charAt(1))) ||
                 (Integer.parseInt(toPos.substring(1,2)) > 8) ||
                 (Integer.parseInt(toPos.substring(1,2)) < 1)){
-            System.out.println("Move entry out of bounds. Please try again.");
+            System.out.println("잘못된 형식입니다. 다시 시도 하세요.");
             return false;
         }
 
@@ -275,17 +275,17 @@ public class Controller{
         int toJ = Controller.fileToInd(toPos);
 
         if(gameBoard.GBoard[fromI][fromJ] == null){
-            System.out.println("No piece exists at filerank entered. Please try again.");
+            System.out.println("좌표에 기물이 존재하지 않습니다. 다시 시도 하세요.");
             return false;
         }
 
         if(isWhiteTurn && gameBoard.GBoard[fromI][fromJ].getPlayer().equalsIgnoreCase("b")){
-            System.out.println("Please select a white piece to move. Try again.");
+            System.out.println("백 기물을 선택해 움직이세요.");
             return false;
         }
 
         if(!isWhiteTurn && gameBoard.GBoard[fromI][fromJ].getPlayer().equalsIgnoreCase("w")){
-            System.out.println("Please select a black piece to move. Try again.");
+            System.out.println("흑 기물을 선택해 움직이세요.");
             return false;
         }
 
@@ -295,13 +295,13 @@ public class Controller{
             return true;
         }
         else{
-            System.out.println("Not a valid move for that piece.");
-            System.out.println("Valid moves for " + gameBoard.GBoard[fromI][fromJ].getPlayer() + gameBoard.GBoard[fromI][fromJ].getPiece() + " at " + gameBoard.GBoard[fromI][fromJ].getPosition() + " are:");
+            System.out.println("해당 기물에 맞지 않는 좌표이동 입니다.");
+            System.out.println("유효한 움직임은 " + gameBoard.GBoard[fromI][fromJ].getPlayer() + gameBoard.GBoard[fromI][fromJ].getPiece() + " at " + gameBoard.GBoard[fromI][fromJ].getPosition() + " are:");
             for(int i = 0;i<gameBoard.GBoard[fromI][fromJ].getMoves().size();i++){
                 System.out.print(gameBoard.GBoard[fromI][fromJ].getMoves().get(i) + " ");
             }
             System.out.println("\n");
-            System.out.println("Please try again.");
+            System.out.println("다시 시도 하세요.");
             return false;
         }
     }
@@ -317,8 +317,8 @@ public class Controller{
         int toJ = Controller.fileToInd(toPos);
 
         if(isWhiteTurn){
-            if(!newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("P") &&
-                    !newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("K")){
+            if(!newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("♟") &&
+                    !newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("♚")){
                 Gamepiece movingPiece = newBoard.GBoard[fromI][fromJ];
                 int newMC = movingPiece.getMoveCount() + 1;
                 movingPiece.setMoveCount(newMC);
@@ -370,7 +370,7 @@ public class Controller{
                 }
             }
 
-            if(newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("P")){
+            if(newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("♟")){
                 //en passant
                 if((fromI == 4) && (toI == 5) && (toJ != fromJ) && (newBoard.GBoard[toI][toJ] == null)){
                     Gamepiece movingPiece = newBoard.GBoard[fromI][fromJ];
@@ -415,7 +415,7 @@ public class Controller{
                         int newMC = movingPiece.getMoveCount() + 1;
                         movingPiece.setMoveCount(newMC);
                         movingPiece.setPosition(toPos.toLowerCase());
-                        movingPiece.setPiece("Q");
+                        movingPiece.setPiece("♛");
 
                         newBoard.GBoard[toI][toJ] = movingPiece;
                         newBoard.GBoard[fromI][fromJ] = null;
@@ -448,7 +448,7 @@ public class Controller{
                         int newMC = movingPiece.getMoveCount() + 1;
                         movingPiece.setMoveCount(newMC);
                         movingPiece.setPosition(toPos.toLowerCase());
-                        movingPiece.setPiece("Q");
+                        movingPiece.setPiece("♛");
 
                         newBoard.GBoard[toI][toJ] = movingPiece;
                         newBoard.GBoard[fromI][fromJ] = null;
@@ -522,7 +522,7 @@ public class Controller{
                 }
             }
 
-            if(newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("K")){
+            if(newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("♚")){
                 if((toI == 0) && (toJ == 6) && (newBoard.GBoard[fromI][fromJ].getMoveCount() == 0)){
                     Gamepiece movingPiece = newBoard.GBoard[fromI][fromJ];
                     int newMC = movingPiece.getMoveCount() + 1;
@@ -627,8 +627,8 @@ public class Controller{
         }
         else{
 
-            if(!newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("P") &&
-                    !newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("K")){
+            if(!newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("♟") &&
+                    !newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("♚")){
                 Gamepiece movingPiece = newBoard.GBoard[fromI][fromJ];
                 int newMC = movingPiece.getMoveCount() + 1;
                 movingPiece.setMoveCount(newMC);
@@ -680,7 +680,7 @@ public class Controller{
                 }
             }
 
-            if(newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("P")){
+            if(newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("♟")){
                 //en passant
                 if((fromI == 3) && (toI == 2) && (toJ != fromJ) && (newBoard.GBoard[toI][toJ] == null)){
 
@@ -726,7 +726,7 @@ public class Controller{
                         int newMC = movingPiece.getMoveCount() + 1;
                         movingPiece.setMoveCount(newMC);
                         movingPiece.setPosition(toPos.toLowerCase());
-                        movingPiece.setPiece("Q");
+                        movingPiece.setPiece("♛");
 
                         newBoard.GBoard[toI][toJ] = movingPiece;
                         newBoard.GBoard[fromI][fromJ] = null;
@@ -759,7 +759,7 @@ public class Controller{
                         int newMC = movingPiece.getMoveCount() + 1;
                         movingPiece.setMoveCount(newMC);
                         movingPiece.setPosition(toPos.toLowerCase());
-                        movingPiece.setPiece("Q");
+                        movingPiece.setPiece("♛");
 
                         newBoard.GBoard[toI][toJ] = movingPiece;
                         newBoard.GBoard[fromI][fromJ] = null;
@@ -833,7 +833,7 @@ public class Controller{
                 }
             }
 
-            if(newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("K")){
+            if(newBoard.GBoard[fromI][fromJ].getPiece().equalsIgnoreCase("♚")){
                 if((toI == 7) && (toJ == 6) && (newBoard.GBoard[fromI][fromJ].getMoveCount() == 0)){
                     Gamepiece movingPiece = newBoard.GBoard[fromI][fromJ];
                     int newMC = movingPiece.getMoveCount() + 1;
