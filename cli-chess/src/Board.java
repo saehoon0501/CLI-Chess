@@ -45,7 +45,7 @@ import java.util.*;
                         }
                     }
 
-                    System.out.print(this.GBoard[i][j].getPlayer() + this.GBoard[i][j].getPiece() + " ");
+                    System.out.print(this.GBoard[i][j].getPlayer() + this.GBoard[i][j].getPiece()+ " ");
 
                     if(j == 7){
                         int k = i+1;
