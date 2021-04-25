@@ -3,9 +3,11 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class PuzzleControl {
     private Puzzle puzzleFile;
+    Puzzle reset = new Puzzle();
     private boolean control;
     private boolean white;
 
@@ -181,7 +183,9 @@ public class PuzzleControl {
                         temp.setPlayer("w");
                         String pos = Controller.indToPos(i, j);
                         temp.setPosition(pos);
+                        reset.getPuzzleBoard().GBoard[i][j] = temp;
                         gameBoard.GBoard[i][j] = temp;
+                        gameBoard.GBoard[i][j].createMoveSet(this.reset.getPuzzleBoard());
                         gameBoard.GBoard[i][j].createMoveSet(this.puzzleFile.getPuzzleBoard());
                     }else {
                         System.out.println("기물 선택 형식 : <비개행공백열0><기물지정자>");
@@ -198,6 +202,8 @@ public class PuzzleControl {
                         String pos = Controller.indToPos(i, j);
                         temp.setPosition(pos);
                         gameBoard.GBoard[i][j] = temp;
+                        reset.getPuzzleBoard().GBoard[i][j] = temp;
+                        gameBoard.GBoard[i][j].createMoveSet(this.reset.getPuzzleBoard());
                         gameBoard.GBoard[i][j].createMoveSet(this.puzzleFile.getPuzzleBoard());
                     }else {
                         System.out.println("<비개행공백열0><기물지정자>");
@@ -333,8 +339,8 @@ public class PuzzleControl {
     public void setPlay(){
         int count = 0;
         String data ="";
-        Board reset = this.puzzleFile.getPuzzleBoard();
-        Board last = this.puzzleFile.getPuzzleBoard();
+        Puzzle result = this.puzzleFile;
+        Stack<Puzzle> temp = new Stack<Puzzle>();
 
         while (this.puzzleFile.getTheme() - count != 0){
             System.out.println("퍼즐 정답 움직임을 설정해 주세요");
@@ -348,37 +354,47 @@ public class PuzzleControl {
             }
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
-            input.trim();
+            input = input.trim();
             String moveToken[] = input.split(" ");
             try {
                 if (input.equalsIgnoreCase("Reset") || input.equalsIgnoreCase("Re") || input.equals("초기화")) {
-                    this.puzzleFile.setPuzzleBoard(reset);
+                    System.out.println("초기화 실행");
                     count = 0;
+                    data ="";
+                    white = false;
+                    result.setPuzzleBoard(reset.getPuzzleBoard());
+                    result.getPuzzleBoard().printBoard();
                 }else if (input.equalsIgnoreCase("Last") || input.equalsIgnoreCase("L") || input.equals("다시")){
-                    this.puzzleFile.setPuzzleBoard(last);
                     count = count - 1;
                     if (count < 0 ){
                         System.out.println("움직임을 먼저 설정해주세요.");
+                        count = count + 1;
+                    }else {
+                        data = this.puzzleFile.getPlaydata();
+                        white = !white;
                     }
                 }else if (input.equalsIgnoreCase("Next") || input.equalsIgnoreCase("Nx") || input.equals("다음")){
 
                 }else if(input.equalsIgnoreCase("Help") || input.equalsIgnoreCase("H") || input.equals("도움")){
 
                 }else{
-                    boolean canMove = Controller.isValidMove(moveToken[0], moveToken[1], this.puzzleFile.getPuzzleBoard(), white);
+                    boolean canMove = Controller.isValidMove(moveToken[0], moveToken[1], result.getPuzzleBoard(), white);
                     if(canMove == false){
                         continue;
                     }
-                    this.puzzleFile.setPuzzleBoard(Controller.processMove(moveToken[0], moveToken[1], this.puzzleFile.getPuzzleBoard(), white));
+                    this.puzzleFile.setPuzzleBoard(Controller.processMove(moveToken[0], moveToken[1], result.getPuzzleBoard(), white));
                     data = data + input +",";
-                    this.puzzleFile.getPuzzleBoard().printBoard();
-                    last = this.puzzleFile.getPuzzleBoard();
+                    this.puzzleFile.setPlaydata(data);
+                    result.getPuzzleBoard().printBoard();
+                    temp.push(result);
                     white = !white;
+                    reset.getPuzzleBoard().printBoard();
                 }
             }catch (ArrayIndexOutOfBoundsException e){
                 System.out.println("존재하지 않는 명령어 입니다.");
             }
         }
+        this.puzzleFile.setPuzzleBoard(result.getPuzzleBoard());
         this.puzzleFile.setPlaydata(data);
     }
 
