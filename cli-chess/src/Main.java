@@ -1,17 +1,20 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 //        Puzzle puzzle = new Puzzle();
-//        puzzle.printBoard();
-    	Puzzle puzzle= new Puzzle("example.txt");
-    	System.out.println(puzzle.getName());
-    	System.out.println(puzzle.getUserName());
-    	System.out.println(puzzle.isHasBeenSolved());
-    	System.out.println(puzzle.getTheme());
+//        puzzle.printBoard();\
+    	PuzzleMain foo = new PuzzleMain();
+    	try {
+			foo.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 //        Board Chessboard = Controller.createBoard(); //Make the board
 //        System.out.println("");
 //        Chessboard.printBoard(); //Print the board and some information about the game

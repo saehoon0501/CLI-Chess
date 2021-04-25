@@ -25,7 +25,8 @@ import java.util.*;
             //Print the board
             for(int i = 7; i>=0; i--){
                 for(int j = 0; j<8; j++){
-                    if(this.GBoard[i][j] == null){
+                    if(this.GBoard[i][j] == null)
+                    {
                         if((isEven(i) && isEven(j)) || (!isEven(i) && !isEven(j))){
                             System.out.print("%% ");
                             if(j == 7){

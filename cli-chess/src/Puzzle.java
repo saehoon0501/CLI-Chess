@@ -43,7 +43,7 @@ public class Puzzle extends Board{
 		    	}
 		    	else if(numLine==3)
 		    	{
-		    		//playdata의 기능???
+		    		this.playdata = str.trim();
 		    		numLine++;
 		    	}
 		    	else if(numLine==4)
@@ -51,16 +51,49 @@ public class Puzzle extends Board{
 		    		this.hasBeenSolved = str.trim().toLowerCase().equals("true");
 		    		numLine++;
 		    	}
-		    	else if(numLine>=5)
+		    	else if(numLine ==5)
 		    	{
-		    		//퍼즐 파일 읽어오기
+		    		Gamepiece temp = new Gamepiece();
+		    		temp.setPiece(str.substring(0,1));
+		    		temp.setPosition(str.substring(2,4));
+		    		temp.setPlayer(str.substring(5,6));
+		    		temp.setMoveCount(Integer.parseInt(str.substring(7,8)));
+		    		puzzleBoard.lastPieceMoved= temp;
 		    		numLine++;
+		    	}
+		    	else if(numLine>=6)
+		    	{
+		    		if(str.equals("null"))
+		    		{
+		    			puzzleBoard.GBoard[(numLine-5)/8][(numLine-5)%8]=null;
+		    			numLine++;
+		    		}
+		    		else
+		    		{
+			    		Gamepiece gp = new Gamepiece();
+			    		gp.setPiece(str.substring(0,1));
+			    		gp.setPosition(str.substring(2,4));
+			    		gp.setPlayer(str.substring(5,6));
+			    		gp.setMoveCount(Integer.parseInt(str.substring(7,8)));
+			    		puzzleBoard.GBoard[(numLine-6)/8][(numLine-6)%8]=gp;
+			    		numLine++;
+		    		}
 		    	}
 			}
 		    in.close();
 		} catch (IOException e) {
 			System.err.println("File not found!");
 		}
+		for(int i=0;i<puzzleBoard.GBoard.length;i++)
+		{
+			for(int j=0;j<puzzleBoard.GBoard[0].length;j++)
+			{
+				if(puzzleBoard.GBoard[i][j]!=null)
+					puzzleBoard.GBoard[i][j].createMoveSet(puzzleBoard);
+			}
+		}
+		puzzleBoard.makePieceList();
+		puzzleBoard.printBoard();
     }
     public Puzzle() {
         this.userName = null;
