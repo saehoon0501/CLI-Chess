@@ -8,7 +8,6 @@ public class Puzzle extends Board{
     private int theme;
     private String playdata;
     private boolean hasBeenSolved;
-
 	private Board puzzleBoard = new Board();
 
     public Puzzle(String userName, String name, int theme) {
