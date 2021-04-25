@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Puzzle extends Board{
     private String userName;
@@ -9,6 +10,7 @@ public class Puzzle extends Board{
     private String playdata;
     private boolean hasBeenSolved;
 	private Board puzzleBoard = new Board();
+	public ArrayList<String> cleared = new ArrayList<String>();
 
     public Puzzle(String userName, String name, int theme) {
         this.userName = userName;
@@ -47,7 +49,24 @@ public class Puzzle extends Board{
 		    	}
 		    	else if(numLine==4)
 		    	{
-		    		this.hasBeenSolved = str.trim().toLowerCase().equals("true");
+		    		String id="";
+		    		for(int i=0;i<str.length();i++)
+		    		{
+		    			if(str.substring(i,i+1).equals(" "))
+		    			{
+		    				cleared.add(id);
+		    				System.out.println(id);
+		    				id="";
+		    				i++;
+		    			}
+		    			else if(i==str.length()-1)
+		    			{
+		    				id+=str.substring(i,i+1);
+		    				cleared.add(id);
+		    				System.out.println(id);
+		    			}
+		    			id+=str.substring(i,i+1);
+		    		}
 		    		numLine++;
 		    	}
 		    	else if(numLine ==5)

@@ -1,8 +1,8 @@
-foobar123
+MyPuzzle
 Jung Hwan
 3
 A2 A4,C2 C4,D2 D4
-false
+Hong333 Gil23 Dong
 P E7 b 0
 R A8 b 0
 N B8 b 0

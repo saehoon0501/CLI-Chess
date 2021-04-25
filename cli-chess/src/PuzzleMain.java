@@ -35,6 +35,10 @@ public class PuzzleMain {
         {
         	//파일을 읽어와서 퍼즐 객체 생성
         	Puzzle puzzle = new Puzzle("PuzzleMode"+"/"+fName.get(inputNum-2));
+        	puzzle.setHasBeenSolved(false);
+        	if(puzzle.cleared.contains(Main.userID))
+        		puzzle.setHasBeenSolved(true);
+        	System.out.println(puzzle.isHasBeenSolved());
         	playPuzzle(puzzle);
         }
     }
