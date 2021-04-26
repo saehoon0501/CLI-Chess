@@ -1,17 +1,27 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class PuzzleMain {
     private ArrayList<Puzzle> puzzles;
     private ArrayList <String> fName = new ArrayList<String>();
+    private String [] validCommands = {"1","1.","replay","re","다시","다시플레이하기","2","2.","hint","ht","힌트","힌트보기","3","3.","solution","sol",
+    		"정답","정답보기","4","4.","next","nx","다음으로","다음퍼즐로이동","5","5.","previous","pr","이전으로","이전퍼즐로이동",
+    		"6","6.","exit","ex","종료","메뉴로돌아가기"};
 
     public PuzzleMain() {
         this.puzzles = new ArrayList<Puzzle>(15);
     }
 
     public void start() throws IOException {
+		System.out.println("명령어의 종류: replay, hint, solution, next, previous, exit (1~6)");
+		System.out.println("위의 명령어 중 하나를 입력해주세요.");
+		System.out.print("\t>_");
         System.out.println("Welcome to Puzzle Mode !");
         System.out.println("Please Select Number in below list"+"\n");
         printPuzzles(this.puzzles);
@@ -39,7 +49,18 @@ public class PuzzleMain {
         	if(puzzle.cleared.contains(Main.userID))
         		puzzle.setHasBeenSolved(true);
         	System.out.println(puzzle.isHasBeenSolved());
-        	playPuzzle(puzzle);
+        	//파일을 읽어와서 퍼즐 객체 생성(수정했어요)
+        	String myFileName = "PuzzleMode"+"/"+fName.get(inputNum-2);
+        	
+        	while(!myFileName.equals("")) {
+            	String str = playPuzzle(puzzle, fName, myFileName); 
+            	if(!str.equals("")) {
+            		myFileName = "PuzzleMode"+"/"+str;
+            	}
+            	else {
+            		myFileName = "";
+            	}
+        	}
         	
         }
     }
@@ -59,8 +80,8 @@ public class PuzzleMain {
             }
         }
     }
-    public String playPuzzle(Puzzle myPuzzle) 
-    {
+    //Puzzle 객체로 Puzzle Play 기능
+    public String playPuzzle(Puzzle myPuzzle, ArrayList<String> fName, String myFileName) throws FileNotFoundException {
     	Board boardOriginal = myPuzzle.getPuzzleBoard();
     	Board boardTemp = copyBoard(boardOriginal);
     	int turn = myPuzzle.getTheme() * 2;
@@ -68,8 +89,9 @@ public class PuzzleMain {
     	boolean myWhite = false;
     	String[] moveInfo = myPuzzle.getPlaydata().split(",");
     	String movedStr = "";
+    	String movedStrSave = "";           // 추가한 거
     	String hintStr = "";
-    	
+    
     	while(turn > 0) {
         	System.out.println("Welcome to Puzzle Play\n");
         	System.out.println("Puzzle name: "+myPuzzle.getName());
@@ -77,6 +99,50 @@ public class PuzzleMain {
         	
         	if(turn%2 == 0) {
         		moveToken = moveInfo[moveCount].split(" ");
+            	// 로그 문자열 지정
+            	String str = "";
+            	if(myWhite) {
+            		str += "흰색 ";
+            	} else {
+            		str += "검은색 ";
+            	}
+            	int i = Controller.rankToInd(moveToken[0]);
+            	int j = Controller.fileToInd(moveToken[0]);
+            	switch(boardTemp.GBoard[i][j].getPiece()) {
+            	case "♙":
+            	case "♟":
+            		str += "폰";
+            		break;
+            	case "♖":
+            	case "♜":
+            		str += "룩";
+            		break;
+            	case "♘":
+            	case "♞":
+            		str += "나이트";
+            		break;
+            	case "♗":
+            	case "♝︎":
+            		str += "비숍";
+            		break;
+            	case "♕":
+            	case "♛":
+            		str += "퀸";
+            		break;
+            	case "♚":
+            	case "♔":
+            		str += "킹";
+            		break;
+            	}
+            	str += "(";
+            	str += moveToken[0].toLowerCase();
+            	str += ")";
+            	str += "가 ";
+            	str += moveToken[1].toLowerCase();
+            	str += "로 이동했습니다.\n";
+            	movedStr = str;
+            	movedStrSave = movedStr;
+            	
             	boardTemp = Controller.processMove(moveToken[0], moveToken[1], boardTemp, myWhite);
             	myWhite = !myWhite;
             	moveCount++;
@@ -87,7 +153,12 @@ public class PuzzleMain {
         	boardTemp.printBoard();
         	
         	// 이동 로그, 힌트 출력
-        	System.out.print(movedStr);
+        	if(!movedStr.equals("")) {
+        		System.out.print(movedStr);
+        	} else {
+        		movedStr = movedStrSave;
+        		System.out.print(movedStr);
+        	}
         	System.out.print(hintStr);
         	//movedStr = "";
         	hintStr = "";
@@ -105,12 +176,61 @@ public class PuzzleMain {
             		Controller.rankToInd(moveToken[0])!=-1 && Controller.fileToInd(moveToken[0])!=-1 &&
             		Controller.rankToInd(moveToken[1])!=-1 && Controller.fileToInd(moveToken[1])!=-1) {
             		Board boardSave = copyBoard(boardTemp);
-            		if(Controller.isValidMove(moveToken[0], moveToken[1], boardTemp, myWhite))
-            			boardTemp = Controller.processMove(moveToken[0], moveToken[1], boardTemp, myWhite);
+            		if(Controller.isValidMove(moveToken[0], moveToken[1], boardTemp, myWhite)) {
+            			// 로그 문자열 지정
+                    	String str = "";
+                    	if(myWhite) {
+                    		str += "흰색 ";
+                    	} else {
+                    		str += "검은색 ";
+                    	}
+                    	int i = Controller.rankToInd(moveToken[0]);
+                    	int j = Controller.fileToInd(moveToken[0]);
+                    	switch(boardTemp.GBoard[i][j].getPiece()) {
+                    	case "♙":
+                    	case "♟":
+                    		str += "폰";
+                    		break;
+                    	case "♖":
+                    	case "♜":
+                    		str += "룩";
+                    		break;
+                    	case "♘":
+                    	case "♞":
+                    		str += "나이트";
+                    		break;
+                    	case "♗":
+                    	case "♝︎":
+                    		str += "비숍";
+                    		break;
+                    	case "♕":
+                    	case "♛":
+                    		str += "퀸";
+                    		break;
+                    	case "♚":
+                    	case "♔":
+                    		str += "킹";
+                    		break;
+                    	}
+                    	str += "(";
+                    	str += moveToken[0].toLowerCase();
+                    	str += ")";
+                    	str += "가 ";
+                    	str += moveToken[1].toLowerCase();
+                    	str += "로 이동했습니다.\n";
+                    	movedStr = str;
+            			
+                    	boardTemp = Controller.processMove(moveToken[0], moveToken[1], boardTemp, myWhite);
+            			
+            			
+            		}
             		else {
             			continue;
             		}
             		boardTemp.printBoard();
+            		System.out.print(movedStr);
+                	System.out.print(hintStr);
+            		
             		String[] answerToken = moveInfo[moveCount].split(" ");
             		if(moveToken[0].equalsIgnoreCase(answerToken[0]) && moveToken[1].equalsIgnoreCase(answerToken[1])) {
             			myWhite = !myWhite;
@@ -122,81 +242,162 @@ public class PuzzleMain {
 
             			boolean flag = true;
             			while(flag) {
-            				System.out.println("명령어의 종류: replay, hint, solution, next, previous, exit");
+            				System.out.println("명령어의 종류: replay, hint, solution, next, previous, exit (1~6)");
                 			System.out.println("위의 명령어 중 하나를 입력해주세요.");
                 			System.out.print("\t>_");
-            				String input2 = scanner.nextLine();
-                			input2.trim();
-                			if(input2.equalsIgnoreCase("replay")) {
+                			String input2 = scanner.nextLine();
+                			input2.trim().replaceAll("\\s+","").toLowerCase();
+                			//유효한 커맨드 배열에 사용자가 입력한 커맨드가 존재하는지 확인
+                			while(!Arrays.asList(validCommands).contains(input2)) 
+                			{
+                				System.err.println("잘못된 입력입니다");
+                				System.out.println("명령어의 종류: replay, hint, solution, next, previous, exit (1~6)");
+                				System.out.println("위의 명령어 중 하나를 입력해주세요.");
+                				System.out.print("\t>_");
+                				input2 = scanner.nextLine();
+                				input2.trim().replaceAll("\\s+","").toLowerCase();
+                			}
+                			//유효한 커맨드  배열의 0~6인덱스 까지, 즉 1번 커맨드의 모든 변형들만 있는 부분에 사용자 입력이 존재하는지 확인
+                			if(Arrays.asList(Arrays.copyOfRange(validCommands, 0, 6)).contains(input2)) {
                 				boardTemp = copyBoard(boardSave);
+                				movedStr = movedStrSave; // 추가한 거
                 				flag = false;
-                			} else if(input2.equalsIgnoreCase("hint")) {
+                			} else if(Arrays.asList(Arrays.copyOfRange(validCommands, 6, 12)).contains(input2)) {
                 				boardTemp = copyBoard(boardSave);
+                				movedStr = movedStrSave; // 추가한 거
                 				moveToken = moveInfo[moveCount].split(" ");
-//                				char pos1 = moveToken[0].charAt(0);
-//                				char pos2 = moveToken[0].charAt(1);
-//                				int pos2_int = Character.getNumericValue(pos2);
-//                				String pieceType = boardTemp.GBoard[pos2_int-1][pos1-'a'].getPiece();
                 				String pieceType = boardTemp.GBoard[Controller.rankToInd(moveToken[0])][Controller.fileToInd(moveToken[0])].getPiece();
                             	switch(pieceType) {
                             	case "♟":
-                            		hintStr = "폰 움직이기\n";
+                            	case "♙":
+                            		hintStr = "힌트: 폰 움직이기\n";
                             		break;
                             	case "♜":
-                            		hintStr = "룩 움직이기\n";
+                            	case "♖":
+                            		hintStr = "힌트: 룩 움직이기\n";
                             		break;
                             	case "♞":
-                            		hintStr = "나이트 움직이기\n";
+                            	case "♘":
+                            		hintStr = "힌트: 나이트 움직이기\n";
                             		break;
                             	case "♝︎":
-                            		hintStr = "비숍 움직이기\n";
+                            	case "♗":
+                            		hintStr = "힌트: 비숍 움직이기\n";
                             		break;
                             	case "♛":
-                            		hintStr = "퀸 움직이기\n";
+                            	case "♕":
+                            		hintStr = "힌트: 퀸 움직이기\n";
                             		break;
                             	case "♚":
-                            		hintStr = "킹 움직이기\n";
+                            	case "♔":
+                            		hintStr = "힌트: 킹 움직이기\n";
                             		break;
                             	default:
                             		break;
                             	}
                             	flag = false;
-                			} else if(input2.equalsIgnoreCase("solution")) {
+                			} else if(Arrays.asList(Arrays.copyOfRange(validCommands, 12, 18)).contains(input2)) {
                 				boardTemp = copyBoard(boardSave);
+                				movedStr = movedStrSave; // 추가한 거
                 				moveToken = moveInfo[moveCount].split(" ");
+                				
+                				// 로그 문자열 지정
+                            	String str = "";
+                            	if(myWhite) {
+                            		str += "흰색 ";
+                            	} else {
+                            		str += "검은색 ";
+                            	}
+                            	int i = Controller.rankToInd(moveToken[0]);
+                            	int j = Controller.fileToInd(moveToken[0]);
+                            	switch(boardTemp.GBoard[i][j].getPiece()) {
+                            	case "♙":
+                            	case "♟":
+                            		str += "폰";
+                            		break;
+                            	case "♖":
+                            	case "♜":
+                            		str += "룩";
+                            		break;
+                            	case "♘":
+                            	case "♞":
+                            		str += "나이트";
+                            		break;
+                            	case "♗":
+                            	case "♝︎":
+                            		str += "비숍";
+                            		break;
+                            	case "♕":
+                            	case "♛":
+                            		str += "퀸";
+                            		break;
+                            	case "♚":
+                            	case "♔":
+                            		str += "킹";
+                            		break;
+                            	}
+                            	str += "(";
+                            	str += moveToken[0].toLowerCase();
+                            	str += ")";
+                            	str += "가 ";
+                            	str += moveToken[1].toLowerCase();
+                            	str += "로 이동했습니다.\n";
+                            	movedStr = str;
+                				
+                				
                             	boardTemp = Controller.processMove(moveToken[0], moveToken[1], boardTemp, myWhite);
+                            	
+                            	boardTemp.printBoard();  ///추가한 부분
+                            	System.out.print(movedStr);
+                            	System.out.print(hintStr);
+                            	
                             	myWhite = !myWhite;
                             	moveCount++;
                             	turn--;
                             	flag = false;
-                			} else if(input2.equalsIgnoreCase("next")) {
+                			} else if(Arrays.asList(Arrays.copyOfRange(validCommands, 18, 24)).contains(input2)) {
                 				System.out.println("현재 퍼즐의 진행상황은 저장되지 않습니다. 계속하시겠습니까? (Y/N)");
                 				String yn = scanner.nextLine();
                 				yn.trim();
                 				if(yn.equalsIgnoreCase("Y")) {
-                					return ""; // 현재 파일의 이름에 대한 인자도 필요. 현재 인덱스가 0이면 이전파일 없다
+                					// 자신의 인덱스+1 = 파일 리스트의 사이즈 -> 다음파일 없다
+                					String[] nameToken = myFileName.split("/");
+                					int fileIndex = fName.indexOf(nameToken[1]);
+                					if(fileIndex+1 == fName.size()) {
+                						System.out.println("다음 퍼즐이 존재하지 않습니다.");
+                					} else {
+                						return fName.get(fileIndex+1);
+                					}
                 				} else if(yn.equalsIgnoreCase("N")){
                 					
                 				} else {
                 					System.out.println("잘못된 입력입니다.");
                 				}
-                			} else if(input2.equalsIgnoreCase("previous")) {
+
+                			} else if(Arrays.asList(Arrays.copyOfRange(validCommands, 24, 30)).contains(input2)) {
                 				System.out.println("현재 퍼즐의 진행상황은 저장되지 않습니다. 계속하시겠습니까? (Y/N)");
                 				String yn = scanner.nextLine();
                 				yn.trim();
                 				if(yn.equalsIgnoreCase("Y")) {
-                					return ""; // 파일의 사이즈-1 = 자신의 인덱스 -> 다음파일 없다
+                					// 현재 인덱스가 0이면 이전파일 없다
+                					String[] nameToken = myFileName.split("/");
+                					int fileIndex = fName.indexOf(nameToken[1]);
+                					if(fileIndex == 0) {
+                						System.out.println("이전 퍼즐이 존재하지 않습니다.");
+                					} else {
+                						return fName.get(fileIndex-1);
+                					}
                 				} else if(yn.equalsIgnoreCase("N")){
                 					
                 				} else {
                 					System.out.println("잘못된 입력입니다.");
                 				}
-                			} else if(input2.equalsIgnoreCase("exit")) {
+                			} else if(Arrays.asList(Arrays.copyOfRange(validCommands, 30, 36)).contains(input2)) {
                 				System.out.println("현재 퍼즐의 진행상황은 저장되지 않습니다. 계속하시겠습니까? (Y/N)");
                 				String yn = scanner.nextLine();
                 				yn.trim();
                 				if(yn.equalsIgnoreCase("Y")) {
-                					return ""; // 걍 종료하면 됨
+                					return ""; // 그냥 종료
                 				} else if(yn.equalsIgnoreCase("N")){
                 					
                 				} else {
@@ -210,103 +411,218 @@ public class PuzzleMain {
             		}
             		
             } else {
-            	// 커맨드 입력으로 인식 가능한지 판별. 이 부분 switch 말고 if로 바꿔야함
-            	switch(input) {
-            	case "1":
-            	case "1.":
-            	case "replay":
+  /////////////// 입력 예외처리 세부사항 작성(2)
+    			input.replaceAll("\\s+","").toLowerCase();
+    			//유효한 커맨드 배열에 사용자가 입력한 커맨드가 존재하는지 확인
+    			while(!Arrays.asList(validCommands).contains(input)) 
+    			{
+    				System.err.println("잘못된 입력입니다");
+    				System.out.println("명령어의 종류: replay, hint, solution, next, previous, exit (1~6)");
+    				System.out.println("위의 명령어 중 하나를 입력해주세요.");
+    				System.out.print("\t>_");
+    				input = scanner.nextLine();
+    				input.trim().replaceAll("\\s+","").toLowerCase();
+    			}
+            	if(Arrays.asList(Arrays.copyOfRange(validCommands, 0, 6)).contains(input)) {
             		boardTemp = copyBoard(boardOriginal);
     				continue;
-            	case "2":
-            	case "2.":
-            	case "hint":
-    				moveToken = moveInfo[moveCount].split(" ");
+            	}
+            	else if(Arrays.asList(Arrays.copyOfRange(validCommands, 6, 12)).contains(input)) {
+            		moveToken = moveInfo[moveCount].split(" ");
     				String pieceType = boardTemp.GBoard[Controller.rankToInd(moveToken[0])][Controller.fileToInd(moveToken[0])].getPiece();
-                	switch(pieceType) {
+    				switch(pieceType) {
                 	case "♟":
-                		hintStr = "폰 움직이기\n";
+                	case "♙":
+                		hintStr = "힌트: 폰 움직이기\n";
                 		break;
                 	case "♜":
-                		hintStr = "룩 움직이기\n";
+                	case "♖":
+                		hintStr = "힌트: 룩 움직이기\n";
                 		break;
                 	case "♞":
-                		hintStr = "나이트 움직이기\n";
+                	case "♘":
+                		hintStr = "힌트: 나이트 움직이기\n";
                 		break;
                 	case "♝︎":
-                		hintStr = "비숍 움직이기\n";
+                	case "♗":
+                		hintStr = "힌트: 비숍 움직이기\n";
                 		break;
                 	case "♛":
-                		hintStr = "퀸 움직이기\n";
+                	case "♕":
+                		hintStr = "힌트: 퀸 움직이기\n";
                 		break;
                 	case "♚":
-                		hintStr = "킹 움직이기\n";
+                	case "♔":
+                		hintStr = "힌트: 킹 움직이기\n";
                 		break;
                 	default:
                 		break;
                 	}
                 	continue;
-            	case "3":
-            	case "3.":
-            	case "solution":
+            	}
+            	else if(Arrays.asList(Arrays.copyOfRange(validCommands, 12, 18)).contains(input)) {
             		moveToken = moveInfo[moveCount].split(" ");
+            		
+            		// 로그 문자열 지정
+                	String str = "";
+                	if(myWhite) {
+                		str += "흰색 ";
+                	} else {
+                		str += "검은색 ";
+                	}
+                	int i = Controller.rankToInd(moveToken[0]);
+                	int j = Controller.fileToInd(moveToken[0]);
+                	switch(boardTemp.GBoard[i][j].getPiece()) {
+                	case "♙":
+                	case "♟":
+                		str += "폰";
+                		break;
+                	case "♖":
+                	case "♜":
+                		str += "룩";
+                		break;
+                	case "♘":
+                	case "♞":
+                		str += "나이트";
+                		break;
+                	case "♗":
+                	case "♝︎":
+                		str += "비숍";
+                		break;
+                	case "♕":
+                	case "♛":
+                		str += "퀸";
+                		break;
+                	case "♚":
+                	case "♔":
+                		str += "킹";
+                		break;
+                	}
+                	str += "(";
+                	str += moveToken[0].toLowerCase();
+                	str += ")";
+                	str += "가 ";
+                	str += moveToken[1].toLowerCase();
+                	str += "로 이동했습니다.\n";
+                	movedStr = str;
+            		
+            		
                 	boardTemp = Controller.processMove(moveToken[0], moveToken[1], boardTemp, myWhite);
                 	myWhite = !myWhite;
                 	moveCount++;
                 	turn--;
                 	continue;
-            	case "4":
-            	case "4.":
-            	case "next":
+            	}
+            	else if(Arrays.asList(Arrays.copyOfRange(validCommands, 18, 24)).contains(input)) {
             		System.out.println("현재 퍼즐의 진행상황은 저장되지 않습니다. 계속하시겠습니까? (Y/N)");
     				String yn = scanner.nextLine();
     				yn.trim();
     				if(yn.equalsIgnoreCase("Y")) {
-    					return "";
+    					// 자신의 인덱스+1 = 파일 리스트의 사이즈 -> 다음파일 없다
+    					String[] nameToken = myFileName.split("/");
+    					int fileIndex = fName.indexOf(nameToken[1]);
+    					if(fileIndex+1 == fName.size()) {
+    						System.out.println("다음 퍼즐이 존재하지 않습니다.");
+    					} else {
+    						return fName.get(fileIndex+1);
+    					}
     				} else if(yn.equalsIgnoreCase("N")){
     					
     				} else {
     					System.out.println("잘못된 입력입니다.");
     				}
-            		break;
-            	case "5":
-            	case "5.":
-            	case "previous":
-            		System.out.println("현재 퍼즐의 진행상황은 저장되지 않습니다. 계속하시겠습니까? (Y/N)");
-    				String yn2 = scanner.nextLine();
-    				yn2.trim();
-    				if(yn2.equalsIgnoreCase("Y")) {
-    					return "";
-    				} else if(yn2.equalsIgnoreCase("N")){
-    					
-    				} else {
-    					System.out.println("잘못된 입력입니다.");
-    				}
-            		break;
-            	case "6":
-            	case "6.":
-            	case "exit":
-            		System.out.println("현재 퍼즐의 진행상황은 저장되지 않습니다. 계속하시겠습니까? (Y/N)");
-    				String yn3 = scanner.nextLine();
-    				yn3.trim();
-    				if(yn3.equalsIgnoreCase("Y")) {
-    					return "";
-    				} else if(yn3.equalsIgnoreCase("N")){
-    					
-    				} else {
-    					System.out.println("잘못된 입력입니다.");
-    				}
-            		break;
-            	default:
-            		System.out.println("잘못된 입력입니다."); // 인식할 수 없는 입력인 경우
-            		break;
             	}
+            	else if(Arrays.asList(Arrays.copyOfRange(validCommands, 24, 30)).contains(input)) {
+            		System.out.println("현재 퍼즐의 진행상황은 저장되지 않습니다. 계속하시겠습니까? (Y/N)");
+    				String yn = scanner.nextLine();
+    				yn.trim();
+    				if(yn.equalsIgnoreCase("Y")) {
+    					// 현재 인덱스가 0이면 이전파일 없다
+    					String[] nameToken = myFileName.split("/");
+    					int fileIndex = fName.indexOf(nameToken[1]);
+    					if(fileIndex == 0) {
+    						System.out.println("이전 퍼즐이 존재하지 않습니다.");
+    					} else {
+    						return fName.get(fileIndex-1);
+    					}
+    				} else if(yn.equalsIgnoreCase("N")){
+    					
+    				} else {
+    					System.out.println("잘못된 입력입니다.");
+    				}
+            	}
+            	else if(Arrays.asList(Arrays.copyOfRange(validCommands, 30, 36)).contains(input)) {
+            		System.out.println("현재 퍼즐의 진행상황은 저장되지 않습니다. 계속하시겠습니까? (Y/N)");
+    				String yn = scanner.nextLine();
+    				yn.trim();
+    				if(yn.equalsIgnoreCase("Y")) {
+    					return ""; // 그냥 종료
+    				} else if(yn.equalsIgnoreCase("N")){
+    					
+    				} else {
+    					System.out.println("잘못된 입력입니다.");
+    				}
+            	}
+            	else {
+            		System.out.println("잘못된 입력입니다."); // 인식할 수 없는 입력인 경우
+            	}
+            	
+
 
             }
     	}
     	boardTemp.printBoard();
+    	System.out.print(movedStr);
+    	System.out.print(hintStr);
     	System.out.println("축하합니다! 퍼즐을 푸는 것에 성공했습니다.");
 		boolean flag = true;
-		// 퍼즐 성공 후 커맨드
+		/////////////////////// 현재 유저의 id를 이 퍼즐의 클리어한 사람들 이름 리스트에 추가(텍스트 파일 수정)
+		//파일 읽어오기
+		Scanner sc = new Scanner(new File(myFileName));
+		StringBuffer buffer = new StringBuffer();
+		while (sc.hasNextLine()) 
+		{
+			buffer.append(sc.nextLine()+System.lineSeparator());
+		}
+		String fileContents = buffer.toString();
+		sc.close();
+		String oldLine = "";
+		for(int i=0;i<myPuzzle.cleared.size();i++)
+		{
+			if(i==myPuzzle.cleared.size()-1)
+				oldLine+=myPuzzle.cleared.get(i);
+			else
+				oldLine+=myPuzzle.cleared.get(i)+" ";
+		}
+		String newLine;
+		if(myPuzzle.cleared.size()==0)
+		{
+			oldLine += "empty";
+			newLine = Main.userID;
+		}
+		else 
+			newLine =oldLine + " " + Main.userID; 
+		//새로운 클리어 아이디 목록과 예전것과 바꾸기
+		fileContents = fileContents.replaceAll(oldLine, newLine);
+		FileWriter writer;
+		try 
+		{
+			writer = new FileWriter(myFileName);
+			PrintWriter pw = new PrintWriter(myFileName);
+			//파일에 있는 내용 모두 삭제
+			pw.print("");
+			pw.close();
+			//새로운 클리어 아이디 목록을 포함하는 내용으로 새로 작성
+			writer.append(fileContents);
+			writer.flush();
+		} catch (IOException e1) 
+		{
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+		}
+
+
+/////////////// 입력 예외처리 세부사항 작성(3)
 		while(flag) {
 			System.out.println("명령어의 종류: replay, hint(선택불가), solution(선택불가), next, previous, exit");
 			System.out.println("위의 명령어 중 하나를 입력해주세요.");
@@ -314,45 +630,67 @@ public class PuzzleMain {
 			Scanner scanner = new Scanner(System.in);
 			String input = scanner.nextLine();
 			input.trim();
-			if(input.equalsIgnoreCase("replay")) {
-//				boardTemp = copyBoard(boardOriginal);
-//				turn = myPuzzle.getTheme() * 2;
-//		    	moveCount = 0;
-//		    	myWhite = false; // 이 부분 next/previous랑 비슷하게 구현
-//				flag = false;
-				return "";
-			} else if(input.equalsIgnoreCase("hint")) {
+   			input.replaceAll("\\s+","").toLowerCase();
+			//유효한 커맨드 배열에 사용자가 입력한 커맨드가 존재하는지 확인
+			while(!Arrays.asList(validCommands).contains(input)) 
+			{
+				System.err.println("잘못된 입력입니다");
+				System.out.println("명령어의 종류: replay, hint, solution, next, previous, exit (1~6)");
+				System.out.println("위의 명령어 중 하나를 입력해주세요.");
+				System.out.print("\t>_");
+				input = scanner.nextLine();
+				input.trim().replaceAll("\\s+","").toLowerCase();
+			}
+			if(Arrays.asList(Arrays.copyOfRange(validCommands, 0, 6)).contains(input)) {
+				String[] nameToken = myFileName.split("/");
+				return nameToken[1];
+				
+			} else if(Arrays.asList(Arrays.copyOfRange(validCommands, 6, 12)).contains(input)) {
 				System.out.println("현재 상태에서 수행할 수 없는 명령어입니다.");
-			} else if(input.equalsIgnoreCase("solution")) {
+			} else if(Arrays.asList(Arrays.copyOfRange(validCommands, 12, 18)).contains(input)) {
 				System.out.println("현재 상태에서 수행할 수 없는 명령어입니다.");
-			} else if(input.equalsIgnoreCase("next")) {
+			} else if(Arrays.asList(Arrays.copyOfRange(validCommands, 18, 24)).contains(input)) {
 				System.out.println("현재 퍼즐의 진행상황은 저장되지 않습니다. 계속하시겠습니까? (Y/N)");
 				String yn = scanner.nextLine();
 				yn.trim();
 				if(yn.equalsIgnoreCase("Y")) {
-					return "";
+					// 자신의 인덱스+1 = 파일 리스트의 사이즈 -> 다음파일 없다
+					String[] nameToken = myFileName.split("/");
+					int fileIndex = fName.indexOf(nameToken[1]);
+					if(fileIndex+1 == fName.size()) {
+						System.out.println("다음 퍼즐이 존재하지 않습니다.");
+					} else {
+						return fName.get(fileIndex+1);
+					}
 				} else if(yn.equalsIgnoreCase("N")){
 					
 				} else {
 					System.out.println("잘못된 입력입니다.");
 				}
-			} else if(input.equalsIgnoreCase("previous")) {
+			} else if(Arrays.asList(Arrays.copyOfRange(validCommands, 24, 30)).contains(input)) {
 				System.out.println("현재 퍼즐의 진행상황은 저장되지 않습니다. 계속하시겠습니까? (Y/N)");
 				String yn = scanner.nextLine();
 				yn.trim();
 				if(yn.equalsIgnoreCase("Y")) {
-					return "";
+					// 현재 인덱스가 0이면 이전파일 없다
+					String[] nameToken = myFileName.split("/");
+					int fileIndex = fName.indexOf(nameToken[1]);
+					if(fileIndex == 0) {
+						System.out.println("이전 퍼즐이 존재하지 않습니다.");
+					} else {
+						return fName.get(fileIndex-1);
+					}
 				} else if(yn.equalsIgnoreCase("N")){
 					
 				} else {
 					System.out.println("잘못된 입력입니다.");
 				}
-			} else if(input.equalsIgnoreCase("exit")) {
+			} else if(Arrays.asList(Arrays.copyOfRange(validCommands, 30, 36)).contains(input)) {
 				System.out.println("현재 퍼즐의 진행상황은 저장되지 않습니다. 계속하시겠습니까? (Y/N)");
 				String yn = scanner.nextLine();
 				yn.trim();
 				if(yn.equalsIgnoreCase("Y")) {
-					return "";
+					return ""; // 그냥 종료
 				} else if(yn.equalsIgnoreCase("N")){
 					
 				} else {
@@ -375,9 +713,11 @@ public class PuzzleMain {
         			nb.GBoard[i][j] = copyGamepiece(b.GBoard[i][j]);
         	}
         }
-        nb.lastPieceMoved = b.lastPieceMoved;
+        //nb.lastPieceMoved = b.lastPieceMoved;
+    	nb.lastPieceMoved = copyGamepiece(b.lastPieceMoved);      // 깊은 복사 코드 수정한 부분
         nb.blackPieceList = new ArrayList<String>();
         for(int i=0; i<b.blackPieceList.size(); i++) {
+        	//nb.blackPieceList.add(b.blackPieceList.get(i));
         	nb.blackPieceList.add(b.blackPieceList.get(i));
         }
         nb.whitePieceList = new ArrayList<String>();
@@ -402,6 +742,7 @@ public class PuzzleMain {
         np.setMoveCount(p.getMoveCount());
         return np;
     }
+    
     
     
     

@@ -1,7 +1,7 @@
 MyPuzzle
 Jung Hwan
 3
-A2 A4,C2 C4,D2 D4
+A2 A4,A7 A5,B2 B4
 Hong333 Gil23 Dong
 P E7 b 0
 R A8 b 0
