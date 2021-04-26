@@ -348,7 +348,6 @@ public class PuzzleControl {
                 if (white) {
                     int time = (this.puzzleFile.getTheme() - count);
                     System.out.println("\t\t\t\t 백 차례" + "남은 턴 횟수 :" + time);
-                    count++;
                 } else {
                     int time = (this.puzzleFile.getTheme() - count);
                     System.out.println("\t\t\t\t 흑 차례" + "남은 턴 횟수 :" + time);
@@ -385,11 +384,16 @@ public class PuzzleControl {
                             this.control = false;
                         }else {
                             System.out.println(" 정답 움직임이 완료되지 않았습니다. ");
+                            count = 0; // reset함.
+                            data ="";
+                            white = false;
+                            result = result.copyBoard(reset);
+                            result.printBoard();
                         }
                 }else if(input.equalsIgnoreCase("Help") || input.equalsIgnoreCase("H") || input.equals("도움")){
                     System.out.println("           좌표 입력 규칙표               ");
                     System.out.println("<알파벳A~H><자연수1~8>" + "또는" + "<자연수1~8><알파벳A~H>");
-                }else if(this.puzzleFile.getTheme() - count != 0){
+                }else if(this.puzzleFile.getTheme()*2 - count != 0){
                     boolean canMove = Controller.isValidMove(moveToken[0], moveToken[1], result, white);
                     if(canMove == false){
                         continue;
@@ -399,6 +403,9 @@ public class PuzzleControl {
                     lastData.push(data);
                     temp.push(last); // 이전값 저장
                     result = (Controller.processMove(moveToken[0], moveToken[1], result, white));
+                    if (white) {
+                        count++;
+                    }
                     data = data + input +",";
                     this.puzzleFile.setPlaydata(data);
                     result.printBoard();
