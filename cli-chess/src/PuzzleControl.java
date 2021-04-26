@@ -348,10 +348,10 @@ public class PuzzleControl {
                 if (white) {
                     int time = (this.puzzleFile.getTheme() - count);
                     System.out.println("\t\t\t\t 백 차례" + "남은 턴 횟수 :" + time);
+                    count++;
                 } else {
                     int time = (this.puzzleFile.getTheme() - count);
                     System.out.println("\t\t\t\t 흑 차례" + "남은 턴 횟수 :" + time);
-                    count++;
                 }
             }else{
                 System.out.println("\t\t\t\t 턴 횟수 종료");
