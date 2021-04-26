@@ -92,7 +92,7 @@ public class PuzzleControl {
             }else if (input.equalsIgnoreCase("Back") || input.equalsIgnoreCase("Bc") || input.equalsIgnoreCase("뒤로")) {
                 this.start();
             }else if (input.equalsIgnoreCase("Exit") || input.equalsIgnoreCase("Ex") || input.equalsIgnoreCase("종료")) {
-
+                        //체스 메인 메뉴로 가는 코드
             }else if (input.equalsIgnoreCase("Next") || input.equalsIgnoreCase("Nx") || input.equalsIgnoreCase("다음")) {
                 if(this.next()){
                     this.puzzleFile.getPuzzleBoard().makePieceList();
@@ -333,27 +333,30 @@ public class PuzzleControl {
     //3번째 움직임 설정
     public void setPlay(){
         int count = 0;
+        this.control = true;
         Board reset = new Board();
         reset = reset.copyBoard(this.puzzleFile.getPuzzleBoard());
-        Board last = new Board();
         String data ="";
-        Board result = this.puzzleFile.getPuzzleBoard();
+        Board result = new Board();
+        result = result.copyBoard(this.puzzleFile.getPuzzleBoard());
         Stack<Board> temp = new Stack<Board>();
+        Stack<String> lastData = new Stack<String>();
 
-        while (this.puzzleFile.getTheme() - count != 0){
-            System.out.println("퍼즐 정답 움직임을 설정해 주세요");
-            if(white){
-                count++;
-                int time = (this.puzzleFile.getTheme() - count);
-                System.out.println("\t\t\t\t 백 차례" + "남은 턴 횟수 :" + time);
+        while (this.control){
+            if(this.puzzleFile.getTheme() - count != 0 ) {
+                System.out.println("퍼즐 정답 움직임을 설정해 주세요");
+                if (white) {
+                    int time = (this.puzzleFile.getTheme() - count);
+                    System.out.println("\t\t\t\t 백 차례" + "남은 턴 횟수 :" + time);
+                } else {
+                    int time = (this.puzzleFile.getTheme() - count);
+                    System.out.println("\t\t\t\t 흑 차례" + "남은 턴 횟수 :" + time);
+                    count++;
+                }
             }else{
-                int time = (this.puzzleFile.getTheme() - count);
-                System.out.println("\t\t\t\t 흑 차례" + "남은 턴 횟수 :" + time);
+                System.out.println("\t\t\t\t 턴 횟수 종료");
+                System.out.println("Next 입력해 다음 단계 진행 해주세요.");
             }
-
-            last = last.copyBoard(result);
-            temp.push(last); // 이전값 저장
-
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
             input = input.trim();
@@ -372,24 +375,32 @@ public class PuzzleControl {
                         System.out.println("움직임을 먼저 설정해주세요.");
                         count = count + 1;
                     }else {
-                        result = temp.pop();
+                        result = result.copyBoard(temp.pop());
                         result.printBoard();
-                        data = this.puzzleFile.getPlaydata();
+                        data = lastData.pop();
                         white = !white;
                     }
                 }else if (input.equalsIgnoreCase("Next") || input.equalsIgnoreCase("Nx") || input.equals("다음")){
-
+                        if (result.isCheckmate(this.kingPos(result), false) && this.puzzleFile.getTheme() - count == 0){
+                            this.control = false;
+                        }else {
+                            System.out.println(" 정답 움직임이 완료되지 않았습니다. ");
+                        }
                 }else if(input.equalsIgnoreCase("Help") || input.equalsIgnoreCase("H") || input.equals("도움")){
-
-                }else{
+                    System.out.println("           좌표 입력 규칙표               ");
+                    System.out.println("<알파벳A~H><자연수1~8>" + "또는" + "<자연수1~8><알파벳A~H>");
+                }else if(this.puzzleFile.getTheme() - count != 0){
                     boolean canMove = Controller.isValidMove(moveToken[0], moveToken[1], result, white);
                     if(canMove == false){
                         continue;
                     }
-                    this.puzzleFile.setPuzzleBoard(Controller.processMove(moveToken[0], moveToken[1], result, white));
+                    Board last = new Board();
+                    last = last.copyBoard(result);
+                    lastData.push(data);
+                    temp.push(last); // 이전값 저장
+                    result = (Controller.processMove(moveToken[0], moveToken[1], result, white));
                     data = data + input +",";
                     this.puzzleFile.setPlaydata(data);
-                    temp.push(last);
                     result.printBoard();
                     white = !white;
                 }
@@ -397,12 +408,54 @@ public class PuzzleControl {
                 System.out.println("존재하지 않는 명령어 입니다.");
             }
         }
+        System.out.println(data);
         this.puzzleFile.setPuzzleBoard(result);
         this.puzzleFile.setPlaydata(data);
     }
 
-    //4번째 파일 이름 선택 후 data output in String format using java.io
+    public Gamepiece kingPos(Board check){
+        for(int i=0; i<8; i++) {
+            for(int j=0; j<8; j++) {
+                if(check.GBoard[i][j] != null) {
+                    if (check.GBoard[i][j].getPlayer().equals("b")) {
+                        if (check.GBoard[i][j].getPiece().equals("♚")) {
+                            return check.GBoard[i][j];
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
+    //4번째 파일 이름 선택 후 data output in String format using java.io
+    public void setName(){
+        this.control = true;
+        while(this.control) {
+            System.out.println("퍼즐 이름을 입력하세요");
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine();
+            input = input.trim();
+            String[] inputToken = input.split(" ");
+            if (input == "") {
+                System.out.println("길이가 1이상");
+                System.out.println("첫 문자와 마지막 문자는 실상 문자");
+                System.out.println("어떠한 개행도 전혀 들어가 있지 않음");
+                continue;
+            }
+
+            for (String s : inputToken){
+                if(s.equals(" ")){
+                    System.out.println("길이가 1이상");
+                    System.out.println("첫 문자와 마지막 문자는 실상 문자");
+                    System.out.println("어떠한 개행도 전혀 들어가 있지 않음");
+                    continue;
+                }
+            }
+
+            this.puzzleFile.setName(input);
+        }
+    }
 
     //Puzzle Play 기능
 
