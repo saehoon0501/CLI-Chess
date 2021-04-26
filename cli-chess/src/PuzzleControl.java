@@ -7,6 +7,7 @@ import java.util.Stack;
 
 public class PuzzleControl {
     private Puzzle puzzleFile;
+    Puzzle reset = new Puzzle();
     private boolean control;
     private boolean white;
 
@@ -182,7 +183,9 @@ public class PuzzleControl {
                         temp.setPlayer("w");
                         String pos = Controller.indToPos(i, j);
                         temp.setPosition(pos);
+                        reset.getPuzzleBoard().GBoard[i][j] = temp;
                         gameBoard.GBoard[i][j] = temp;
+                        gameBoard.GBoard[i][j].createMoveSet(this.reset.getPuzzleBoard());
                         gameBoard.GBoard[i][j].createMoveSet(this.puzzleFile.getPuzzleBoard());
                     }else {
                         System.out.println("기물 선택 형식 : <비개행공백열0><기물지정자>");
@@ -199,6 +202,8 @@ public class PuzzleControl {
                         String pos = Controller.indToPos(i, j);
                         temp.setPosition(pos);
                         gameBoard.GBoard[i][j] = temp;
+                        reset.getPuzzleBoard().GBoard[i][j] = temp;
+                        gameBoard.GBoard[i][j].createMoveSet(this.reset.getPuzzleBoard());
                         gameBoard.GBoard[i][j].createMoveSet(this.puzzleFile.getPuzzleBoard());
                     }else {
                         System.out.println("<비개행공백열0><기물지정자>");
@@ -342,6 +347,9 @@ public class PuzzleControl {
         Stack<Board> temp = new Stack<Board>();
         Stack<String> lastData = new Stack<String>();
 
+        Puzzle result = this.puzzleFile;
+        Stack<Puzzle> temp = new Stack<Puzzle>();
+
         while (this.control){
             if(this.puzzleFile.getTheme() - count != 0 ) {
                 System.out.println("퍼즐 정답 움직임을 설정해 주세요");
@@ -368,6 +376,8 @@ public class PuzzleControl {
                     white = false;
                     result = result.copyBoard(reset);
                     result.printBoard();
+                    result.setPuzzleBoard(reset.getPuzzleBoard());
+                    result.getPuzzleBoard().printBoard();
                 }else if (input.equalsIgnoreCase("Last") || input.equalsIgnoreCase("L") || input.equals("다시")){
                     count = count - 1;
                     if (count < 0 ){
@@ -377,6 +387,7 @@ public class PuzzleControl {
                         result = result.copyBoard(temp.pop());
                         result.printBoard();
                         data = lastData.pop();
+                        data = this.puzzleFile.getPlaydata();
                         white = !white;
                     }
                 }else if (input.equalsIgnoreCase("Next") || input.equalsIgnoreCase("Nx") || input.equals("다음")){
@@ -409,7 +420,19 @@ public class PuzzleControl {
                     data = data + input +",";
                     this.puzzleFile.setPlaydata(data);
                     result.printBoard();
+
+                }else{
+                    boolean canMove = Controller.isValidMove(moveToken[0], moveToken[1], result.getPuzzleBoard(), white);
+                    if(canMove == false){
+                        continue;
+                    }
+                    this.puzzleFile.setPuzzleBoard(Controller.processMove(moveToken[0], moveToken[1], result.getPuzzleBoard(), white));
+                    data = data + input +",";
+                    this.puzzleFile.setPlaydata(data);
+                    result.getPuzzleBoard().printBoard();
+                    temp.push(result);
                     white = !white;
+                    reset.getPuzzleBoard().printBoard();
                 }
             }catch (ArrayIndexOutOfBoundsException e){
                 System.out.println("존재하지 않는 명령어 입니다.");
@@ -417,6 +440,7 @@ public class PuzzleControl {
         }
         System.out.println(data);
         this.puzzleFile.setPuzzleBoard(result);
+        this.puzzleFile.setPuzzleBoard(result.getPuzzleBoard());
         this.puzzleFile.setPlaydata(data);
     }
 

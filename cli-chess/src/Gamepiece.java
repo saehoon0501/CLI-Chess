@@ -62,6 +62,28 @@ public class Gamepiece{
             this.piece = newPiece;
             return true;
         }else if (newPiece.equals("♚") ||newPiece.equals("킹") ||newPiece.equalsIgnoreCase("k")|| newPiece.equalsIgnoreCase("King")){
+
+        if(newPiece.equalsIgnoreCase("♟") ||newPiece.equalsIgnoreCase("p") || newPiece.equalsIgnoreCase("Pawn")|| newPiece.equalsIgnoreCase("폰")){
+                newPiece = "♟";
+            this.piece = newPiece;
+            return true;
+        }else if(newPiece.equalsIgnoreCase("♜") || newPiece.equalsIgnoreCase("r")|| newPiece.equalsIgnoreCase("Rook")|| newPiece.equalsIgnoreCase("룩")){
+               newPiece = "♜";
+            this.piece = newPiece;
+            return true;
+        }else if  (newPiece.equalsIgnoreCase("♞") || newPiece.equalsIgnoreCase("n")|| newPiece.equalsIgnoreCase("Knight")|| newPiece.equalsIgnoreCase("나이트")){
+                newPiece = "♞";
+            this.piece = newPiece;
+            return true;
+        }else if (newPiece.equalsIgnoreCase("♝") || newPiece.equalsIgnoreCase("b")|| newPiece.equalsIgnoreCase("Bishop")|| newPiece.equalsIgnoreCase("비숍")){
+                newPiece = "♝︎";
+            this.piece = newPiece;
+            return true;
+        }else if (newPiece.equalsIgnoreCase("♛") || newPiece.equalsIgnoreCase("q")|| newPiece.equalsIgnoreCase("Queen")|| newPiece.equalsIgnoreCase("퀸")){
+                newPiece = "♛";
+            this.piece = newPiece;
+            return true;
+        }else if (newPiece.equalsIgnoreCase("♚") || newPiece.equalsIgnoreCase("k")|| newPiece.equalsIgnoreCase("King")|| newPiece.equalsIgnoreCase("킹")){
                 newPiece = "♚";
             this.piece = newPiece;
             return true;
