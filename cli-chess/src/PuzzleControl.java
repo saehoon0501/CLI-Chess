@@ -7,7 +7,6 @@ import java.util.Stack;
 
 public class PuzzleControl {
     private Puzzle puzzleFile;
-    Puzzle reset = new Puzzle();
     private boolean control;
     private boolean white;
 
@@ -183,9 +182,7 @@ public class PuzzleControl {
                         temp.setPlayer("w");
                         String pos = Controller.indToPos(i, j);
                         temp.setPosition(pos);
-                        reset.getPuzzleBoard().GBoard[i][j] = temp;
                         gameBoard.GBoard[i][j] = temp;
-                        gameBoard.GBoard[i][j].createMoveSet(this.reset.getPuzzleBoard());
                         gameBoard.GBoard[i][j].createMoveSet(this.puzzleFile.getPuzzleBoard());
                     }else {
                         System.out.println("기물 선택 형식 : <비개행공백열0><기물지정자>");
@@ -202,8 +199,6 @@ public class PuzzleControl {
                         String pos = Controller.indToPos(i, j);
                         temp.setPosition(pos);
                         gameBoard.GBoard[i][j] = temp;
-                        reset.getPuzzleBoard().GBoard[i][j] = temp;
-                        gameBoard.GBoard[i][j].createMoveSet(this.reset.getPuzzleBoard());
                         gameBoard.GBoard[i][j].createMoveSet(this.puzzleFile.getPuzzleBoard());
                     }else {
                         System.out.println("<비개행공백열0><기물지정자>");
@@ -338,9 +333,12 @@ public class PuzzleControl {
     //3번째 움직임 설정
     public void setPlay(){
         int count = 0;
+        Board reset = new Board();
+        reset = reset.copyBoard(this.puzzleFile.getPuzzleBoard());
+        Board last = new Board();
         String data ="";
-        Puzzle result = this.puzzleFile;
-        Stack<Puzzle> temp = new Stack<Puzzle>();
+        Board result = this.puzzleFile.getPuzzleBoard();
+        Stack<Board> temp = new Stack<Board>();
 
         while (this.puzzleFile.getTheme() - count != 0){
             System.out.println("퍼즐 정답 움직임을 설정해 주세요");
@@ -352,6 +350,10 @@ public class PuzzleControl {
                 int time = (this.puzzleFile.getTheme() - count);
                 System.out.println("\t\t\t\t 흑 차례" + "남은 턴 횟수 :" + time);
             }
+
+            last = last.copyBoard(result);
+            temp.push(last); // 이전값 저장
+
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
             input = input.trim();
@@ -362,14 +364,16 @@ public class PuzzleControl {
                     count = 0;
                     data ="";
                     white = false;
-                    result.setPuzzleBoard(reset.getPuzzleBoard());
-                    result.getPuzzleBoard().printBoard();
+                    result = result.copyBoard(reset);
+                    result.printBoard();
                 }else if (input.equalsIgnoreCase("Last") || input.equalsIgnoreCase("L") || input.equals("다시")){
                     count = count - 1;
                     if (count < 0 ){
                         System.out.println("움직임을 먼저 설정해주세요.");
                         count = count + 1;
                     }else {
+                        result = temp.pop();
+                        result.printBoard();
                         data = this.puzzleFile.getPlaydata();
                         white = !white;
                     }
@@ -378,23 +382,22 @@ public class PuzzleControl {
                 }else if(input.equalsIgnoreCase("Help") || input.equalsIgnoreCase("H") || input.equals("도움")){
 
                 }else{
-                    boolean canMove = Controller.isValidMove(moveToken[0], moveToken[1], result.getPuzzleBoard(), white);
+                    boolean canMove = Controller.isValidMove(moveToken[0], moveToken[1], result, white);
                     if(canMove == false){
                         continue;
                     }
-                    this.puzzleFile.setPuzzleBoard(Controller.processMove(moveToken[0], moveToken[1], result.getPuzzleBoard(), white));
+                    this.puzzleFile.setPuzzleBoard(Controller.processMove(moveToken[0], moveToken[1], result, white));
                     data = data + input +",";
                     this.puzzleFile.setPlaydata(data);
-                    result.getPuzzleBoard().printBoard();
-                    temp.push(result);
+                    temp.push(last);
+                    result.printBoard();
                     white = !white;
-                    reset.getPuzzleBoard().printBoard();
                 }
             }catch (ArrayIndexOutOfBoundsException e){
                 System.out.println("존재하지 않는 명령어 입니다.");
             }
         }
-        this.puzzleFile.setPuzzleBoard(result.getPuzzleBoard());
+        this.puzzleFile.setPuzzleBoard(result);
         this.puzzleFile.setPlaydata(data);
     }
 

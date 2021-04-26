@@ -19,6 +19,20 @@ public class Gamepiece{
         movecount = 0;
     }
 
+    public Gamepiece copyGamepiece(Gamepiece p) {
+        Gamepiece np = new Gamepiece();
+        np.setPiece(p.getPiece());
+        np.setPosition(p.getPosition());
+        np.setPlayer(p.getPlayer());
+        ArrayList<String> temp = new ArrayList<String>();
+        for(int i=0; i<p.getMoves().size(); i++) {
+            temp.add(p.getMoves().get(i));
+        }
+        np.setMoves(temp);
+        np.setMoveCount(p.getMoveCount());
+        return np;
+    }
+
     //Getters and Setters
 
     public String getPiece(){

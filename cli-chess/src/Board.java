@@ -20,6 +20,42 @@ import java.util.*;
             this.turn = 0;
         }
 
+        public Board copyBoard(Board b) {
+            Board nb = new Board();
+            nb.GBoard = new Gamepiece[8][8];
+            for(int i=0; i<8; i++) {
+                for(int j=0; j<8; j++) {
+                    if(b.GBoard[i][j]!=null)
+                        nb.GBoard[i][j] = copyGamepiece(b.GBoard[i][j]);
+                }
+            }
+            nb.lastPieceMoved = b.lastPieceMoved;
+            nb.blackPieceList = new ArrayList<String>();
+            for(int i=0; i<b.blackPieceList.size(); i++) {
+                nb.blackPieceList.add(b.blackPieceList.get(i));
+            }
+            nb.whitePieceList = new ArrayList<String>();
+            for(int i=0; i<b.whitePieceList.size(); i++) {
+                nb.whitePieceList.add(b.whitePieceList.get(i));
+            }
+            nb.turn = b.turn;
+            return nb;
+        }
+
+        public Gamepiece copyGamepiece(Gamepiece p) {
+            Gamepiece np = new Gamepiece();
+            np.setPiece(p.getPiece());
+            np.setPosition(p.getPosition());
+            np.setPlayer(p.getPlayer());
+            ArrayList<String> temp = new ArrayList<String>();
+            for(int i=0; i<p.getMoves().size(); i++) {
+                temp.add(p.getMoves().get(i));
+            }
+            np.setMoves(temp);
+            np.setMoveCount(p.getMoveCount());
+            return np;
+        }
+
 
         public void printBoard(){
 
