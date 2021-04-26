@@ -17,7 +17,6 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-      
 //        Board Chessboard = Controller.createBoard(); //Make the board
 //        System.out.println("");
 //        Chessboard.printBoard(); //Print the board and some information about the game
