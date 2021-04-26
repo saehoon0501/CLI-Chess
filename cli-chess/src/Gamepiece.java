@@ -18,20 +18,29 @@ public class Gamepiece{
         this.moves = new ArrayList<String>();
         movecount = 0;
     }
-
-    public Gamepiece copyGamepiece(Gamepiece p) {
-        Gamepiece np = new Gamepiece();
-        np.setPiece(p.getPiece());
-        np.setPosition(p.getPosition());
-        np.setPlayer(p.getPlayer());
-        ArrayList<String> temp = new ArrayList<String>();
-        for(int i=0; i<p.getMoves().size(); i++) {
-            temp.add(p.getMoves().get(i));
+    
+    public Board copyBoard(Board b) {
+            Board nb = new Board();
+            nb.GBoard = new Gamepiece[8][8];
+            for(int i=0; i<8; i++) {
+                for(int j=0; j<8; j++) {
+                    if(b.GBoard[i][j]!=null)
+                        nb.GBoard[i][j] = copyGamepiece(b.GBoard[i][j]);
+                }
+            }
+            nb.lastPieceMoved = b.lastPieceMoved;
+            nb.blackPieceList = new ArrayList<String>();
+            for(int i=0; i<b.blackPieceList.size(); i++) {
+                nb.blackPieceList.add(b.blackPieceList.get(i));
+            }
+            nb.whitePieceList = new ArrayList<String>();
+            for(int i=0; i<b.whitePieceList.size(); i++) {
+                nb.whitePieceList.add(b.whitePieceList.get(i));
+            }
+            nb.turn = b.turn;
+            return nb;
         }
-        np.setMoves(temp);
-        np.setMoveCount(p.getMoveCount());
-        return np;
-    }
+    
 
     //Getters and Setters
 
@@ -62,28 +71,6 @@ public class Gamepiece{
             this.piece = newPiece;
             return true;
         }else if (newPiece.equals("♚") ||newPiece.equals("킹") ||newPiece.equalsIgnoreCase("k")|| newPiece.equalsIgnoreCase("King")){
-
-        if(newPiece.equalsIgnoreCase("♟") ||newPiece.equalsIgnoreCase("p") || newPiece.equalsIgnoreCase("Pawn")|| newPiece.equalsIgnoreCase("폰")){
-                newPiece = "♟";
-            this.piece = newPiece;
-            return true;
-        }else if(newPiece.equalsIgnoreCase("♜") || newPiece.equalsIgnoreCase("r")|| newPiece.equalsIgnoreCase("Rook")|| newPiece.equalsIgnoreCase("룩")){
-               newPiece = "♜";
-            this.piece = newPiece;
-            return true;
-        }else if  (newPiece.equalsIgnoreCase("♞") || newPiece.equalsIgnoreCase("n")|| newPiece.equalsIgnoreCase("Knight")|| newPiece.equalsIgnoreCase("나이트")){
-                newPiece = "♞";
-            this.piece = newPiece;
-            return true;
-        }else if (newPiece.equalsIgnoreCase("♝") || newPiece.equalsIgnoreCase("b")|| newPiece.equalsIgnoreCase("Bishop")|| newPiece.equalsIgnoreCase("비숍")){
-                newPiece = "♝︎";
-            this.piece = newPiece;
-            return true;
-        }else if (newPiece.equalsIgnoreCase("♛") || newPiece.equalsIgnoreCase("q")|| newPiece.equalsIgnoreCase("Queen")|| newPiece.equalsIgnoreCase("퀸")){
-                newPiece = "♛";
-            this.piece = newPiece;
-            return true;
-        }else if (newPiece.equalsIgnoreCase("♚") || newPiece.equalsIgnoreCase("k")|| newPiece.equalsIgnoreCase("King")|| newPiece.equalsIgnoreCase("킹")){
                 newPiece = "♚";
             this.piece = newPiece;
             return true;
