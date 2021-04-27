@@ -63,8 +63,14 @@ public class DDual {
 				}
                 String[] sToken = s.split(",");
                 if(turn!=1) {
-            	Chessboard = Controller.processMove(sToken[0], sToken[1], Chessboard, whiteTurn);
-            	Chessboard.printBoard();
+                	//////////////////////////////////
+                	int r = Controller.rankToInd(sToken[0]);
+                	int c = Controller.fileToInd(sToken[0]);
+                	if(Controller.satisfiesPromo(Chessboard.GBoard[r][c],sToken[1]))
+                		Controller.processPromo(Chessboard.GBoard[r][c], Chessboard);
+	            	Chessboard = Controller.processMove(sToken[0], sToken[1], Chessboard, whiteTurn);
+	            	Chessboard.printBoard();
+                	//////////////////////////////////
                 }
             if(whiteTurn){
                 for(int i = 0;i<8;i++){
@@ -199,10 +205,16 @@ public class DDual {
                                 continue;
                             }
                             else{
+                            	//////////////////////////////////
+			                	int r = Controller.rankToInd(inputTokens[0]);
+			                	int c = Controller.fileToInd(inputTokens[0]);
+			                	if(Controller.satisfiesPromo(Chessboard.GBoard[r][c],inputTokens[1]))
+			                		Controller.processPromo(Chessboard.GBoard[r][c], Chessboard);
                                 Chessboard = Controller.processMove(inputTokens[0], inputTokens[1], Chessboard, whiteTurn);
                                 Chessboard.printBoard();
                                 whiteTurn = !whiteTurn;
                                 continue;
+			                	//////////////////////////////////
                             }
                         }
                     }
@@ -223,10 +235,16 @@ public class DDual {
                                 continue;
                             }
                             else{
+                            	////////////////////////
+			                	int r = Controller.rankToInd(inputTokens[0]);
+			                	int c = Controller.fileToInd(inputTokens[0]);
+			                	if(Controller.satisfiesPromo(Chessboard.GBoard[r][c],inputTokens[1]))
+			                		Controller.processPromo(Chessboard.GBoard[r][c], Chessboard);
                                 Chessboard = Controller.processMove(inputTokens[0], inputTokens[1], Chessboard, whiteTurn);
                                 Chessboard.printBoard();
                                 whiteTurn = !whiteTurn;
                                 continue;
+			                	////////////////////////
                             }
                         }
                     }
@@ -262,13 +280,20 @@ public class DDual {
                     continue;
                 }
                 else{
+                	////////////////////////
+                	int r = Controller.rankToInd(inputTokens[0]);
+                	int c = Controller.fileToInd(inputTokens[0]);
+                	if(Controller.satisfiesPromo(Chessboard.GBoard[r][c], inputTokens[1]))
+                		Controller.processPromo(Chessboard.GBoard[r][c], Chessboard);
                     Chessboard = Controller.processMove(inputTokens[0], inputTokens[1], Chessboard, whiteTurn);
                     Chessboard.printBoard();
                     whiteTurn = !whiteTurn;
                     continue;
+                	////////////////////////
                 }
             }
-            else if(inputTokens.length == 3){ //If user entered 3 tokens, it could be draw proposal or promotion
+            else if(inputTokens.length == 3)
+            { //If user entered 3 tokens, it could be draw proposal or promotion
                 // CASE: Promotion
                 System.out.println("프로모션할 기물을 선택해주세요.");
                 if(inputTokens[2].equalsIgnoreCase("R") || inputTokens[2].equalsIgnoreCase("Rook") || inputTokens[2].equalsIgnoreCase("룩") ||
@@ -299,10 +324,16 @@ public class DDual {
                         continue;
                     }
                     else{
-                        Chessboard = Controller.processPromo(inputTokens[0], inputTokens[1], Chessboard, whiteTurn, inputTokens[2]);
+                    	////////////////////////
+                    	int r = Controller.rankToInd(inputTokens[0]);
+                    	int c = Controller.fileToInd(inputTokens[0]);
+                    	if(Controller.satisfiesPromo(Chessboard.GBoard[r][c], inputTokens[1]))
+                    		Controller.processPromo(Chessboard.GBoard[r][c], Chessboard);
+                        Chessboard = Controller.processMove(inputTokens[0], inputTokens[1], Chessboard, whiteTurn);
                         Chessboard.printBoard();
                         whiteTurn = !whiteTurn;
                         continue;
+                    	////////////////////////
                     }
                 }
                 else{
