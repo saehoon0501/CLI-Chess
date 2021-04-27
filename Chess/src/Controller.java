@@ -9,8 +9,9 @@ import java.util.*;
  *
  */
 
-public class Controller{
-
+public class Controller
+{
+	private static String [] promoPiece = { "r","rook","룩","p","pawn","폰","b","bishop","비숍","q","queen","퀸","k","king","킹","n","knight","나이트"};
     //Method to create the gameboard
     public static Board createBoard(){
         Board gameBoard = new Board();
@@ -882,7 +883,6 @@ public class Controller{
                     newBoard = Controller.processMove(Controller.indToPos(7, 0), Controller.indToPos(7, 3), newBoard, isWhiteTurn);
                     newBoard.lastPieceMoved = movingPiece;
                     newBoard.updateMoves();
-
                     return newBoard;
                 }
                 else{
@@ -938,138 +938,202 @@ public class Controller{
             }
 
         }
-
         return newBoard;
     }
-
-    //Method to make special pawn promotion move
-    public static Board processPromo(String fromPos, String toPos, Board gameBoard, boolean isWhiteTurn, String promo){
-        Board newBoard = new Board();
-        newBoard = gameBoard;
-        int fromI = Controller.rankToInd(fromPos);
-        int fromJ = Controller.fileToInd(fromPos);
-        int toI = Controller.rankToInd(toPos);
-        int toJ = Controller.fileToInd(toPos);
-
-        if(isWhiteTurn){
-            if(newBoard.GBoard[toI][toJ] == null){
-                Gamepiece movingPiece = newBoard.GBoard[fromI][fromJ];
-                int newMC = movingPiece.getMoveCount() + 1;
-                movingPiece.setMoveCount(newMC);
-                movingPiece.setPosition(toPos.toLowerCase());
-                movingPiece.setPiece(promo);
-
-                newBoard.GBoard[toI][toJ] = movingPiece;
-                newBoard.GBoard[fromI][fromJ] = null;
-                int pieceIndex = -1;
-                for(int i = 0; i<newBoard.getwhitePieceList().size(); i++){
-                    if(newBoard.getwhitePieceList().get(i).equalsIgnoreCase(fromPos)){
-                        pieceIndex = i;
-                        break;
-                    }
-                }
-                newBoard.getwhitePieceList().remove(pieceIndex);
-                newBoard.getwhitePieceList().add(movingPiece.getPosition());
-
-                newBoard.lastPieceMoved = movingPiece;
-                newBoard.updateMoves();
-
-                return newBoard;
-            }
-            else{
-                int blackPieceInd = -1;
-                for(int i = 0; i<newBoard.getblackPiecelist().size(); i++){
-                    if(newBoard.getblackPiecelist().get(i).equalsIgnoreCase(toPos)){
-                        blackPieceInd = i;
-                        break;
-                    }
-                }
-                newBoard.getblackPiecelist().remove(blackPieceInd);
-
-                Gamepiece movingPiece = newBoard.GBoard[fromI][fromJ];
-                int newMC = movingPiece.getMoveCount() + 1;
-                movingPiece.setMoveCount(newMC);
-                movingPiece.setPosition(toPos.toLowerCase());
-                movingPiece.setPiece(promo);
-
-                newBoard.GBoard[toI][toJ] = movingPiece;
-                newBoard.GBoard[fromI][fromJ] = null;
-                int pieceIndex = -1;
-                for(int i = 0; i<newBoard.getwhitePieceList().size(); i++){
-                    if(newBoard.getwhitePieceList().get(i).equalsIgnoreCase(fromPos)){
-                        pieceIndex = i;
-                        break;
-                    }
-                }
-                newBoard.getwhitePieceList().remove(pieceIndex);
-                newBoard.getwhitePieceList().add(movingPiece.getPosition());
-
-                newBoard.lastPieceMoved = movingPiece;
-                newBoard.updateMoves();
-
-                return newBoard;
-            }
-        }
-        else{
-            if(newBoard.GBoard[toI][toJ] == null){
-                Gamepiece movingPiece = newBoard.GBoard[fromI][fromJ];
-                int newMC = movingPiece.getMoveCount() + 1;
-                movingPiece.setMoveCount(newMC);
-                movingPiece.setPosition(toPos.toLowerCase());
-                movingPiece.setPiece(promo);
-
-                newBoard.GBoard[toI][toJ] = movingPiece;
-                newBoard.GBoard[fromI][fromJ] = null;
-                int pieceIndex = -1;
-                for(int i = 0; i<newBoard.getblackPiecelist().size(); i++){
-                    if(newBoard.getblackPiecelist().get(i).equalsIgnoreCase(fromPos)){
-                        pieceIndex = i;
-                        break;
-                    }
-                }
-                newBoard.getblackPiecelist().remove(pieceIndex);
-                newBoard.getblackPiecelist().add(movingPiece.getPosition());
-
-                newBoard.lastPieceMoved = movingPiece;
-                newBoard.updateMoves();
-
-                return newBoard;
-            }
-            else{
-                int whitePieceInd = -1;
-                for(int i = 0; i<newBoard.getwhitePieceList().size(); i++){
-                    if(newBoard.getwhitePieceList().get(i).equalsIgnoreCase(toPos)){
-                        whitePieceInd = i;
-                        break;
-                    }
-                }
-                newBoard.getwhitePieceList().remove(whitePieceInd);
-
-                Gamepiece movingPiece = newBoard.GBoard[fromI][fromJ];
-                int newMC = movingPiece.getMoveCount() + 1;
-                movingPiece.setMoveCount(newMC);
-                movingPiece.setPosition(toPos.toLowerCase());
-                movingPiece.setPiece(promo);
-
-                newBoard.GBoard[toI][toJ] = movingPiece;
-                newBoard.GBoard[fromI][fromJ] = null;
-                int pieceIndex = -1;
-                for(int i = 0; i<newBoard.getblackPiecelist().size(); i++){
-                    if(newBoard.getblackPiecelist().get(i).equalsIgnoreCase(fromPos)){
-                        pieceIndex = i;
-                        break;
-                    }
-                }
-                newBoard.getblackPiecelist().remove(pieceIndex);
-                newBoard.getblackPiecelist().add(movingPiece.getPosition());
-
-                newBoard.lastPieceMoved = movingPiece;
-                newBoard.updateMoves();
-
-                return newBoard;
-            }
-        }
+    public static boolean satisfiesPromo(Gamepiece piece, String toPos)
+    {
+    	if(piece.getPlayer().toLowerCase().equals("w"))
+    	{
+    		if(toPos.substring(1,2).toLowerCase().equals("8"))
+    			return true;
+    		return false;
+    	}
+    	if(toPos.substring(1,2).toLowerCase().equals("1"))
+			return true;
+		return false;
     }
+    public static void processPromo(Gamepiece piece, Board currentBoard)
+    {
+    	Scanner keyboard= new Scanner(System.in);
+    	System.out.println("변경하고 싶은 말을 선택해주세요: ");
+    	System.out.println("예)p, r, rook, Knight...");
+    	String input = keyboard.nextLine();
+        String flag = input.trim().replaceAll("\\s+","").toLowerCase();
+    	while(!(Arrays.asList(promoPiece).contains(flag))||(flag.equals("k")||flag.equals("king")||flag.equals("킹")))
+    	{
+    		System.err.println("올바르지 않은 값! 다시 입력하세요");
+        	System.out.println("변경하고 싶은 말을 선택해주세요: ");
+        	System.out.println("예)p, r, rook, Knight...");
+    		input = keyboard.nextLine();
+    		flag = input.trim().replaceAll("\\s+","").toLowerCase();
+    	}
+    	if(Arrays.asList(Arrays.copyOfRange(promoPiece, 0, 3)).contains(flag))
+    	{
+    		piece.setPiece("♜");
+    		if(piece.getPlayer().toLowerCase().equals("w"))
+    			piece.setPiece("♖");
+    	}
+    	else if(Arrays.asList(Arrays.copyOfRange(promoPiece, 3, 6)).contains(flag))
+    	{
+      		piece.setPiece("♟");
+    		if(piece.getPlayer().toLowerCase().equals("w"))
+    			piece.setPiece("♙");
+    	}
+    	else if(Arrays.asList(Arrays.copyOfRange(promoPiece, 6, 9)).contains(flag))
+    	{
+      		piece.setPiece("︎︎♝");
+    		if(piece.getPlayer().toLowerCase().equals("w"))
+    			piece.setPiece("♗");
+    	}
+    	else if(Arrays.asList(Arrays.copyOfRange(promoPiece, 9, 12)).contains(flag))
+    	{
+      		piece.setPiece("︎︎♕");
+    		if(piece.getPlayer().toLowerCase().equals("w"))
+    			piece.setPiece("♛");
+    	}
+    	else if(Arrays.asList(Arrays.copyOfRange(promoPiece, 12, 15)).contains(flag))
+    	{
+      		piece.setPiece("︎︎♚");
+    		if(piece.getPlayer().toLowerCase().equals("w"))
+    			piece.setPiece("♔");
+    	}
+    	else if(Arrays.asList(Arrays.copyOfRange(promoPiece, 15, 18)).contains(flag))
+    	{
+      		piece.setPiece("︎︎♞");
+    		if(piece.getPlayer().toLowerCase().equals("w"))
+    			piece.setPiece("♘");
+    	}
+    	//creeate mvoeset??
+    	piece.createMoveSet(currentBoard);
+    }
+    //Method to make special pawn promotion move
+//    public static Board processPromo(String fromPos, String toPos, Board gameBoard, boolean isWhiteTurn, String promo){
+//        Board newBoard = new Board();
+//        newBoard = gameBoard;
+//        int fromI = Controller.rankToInd(fromPos);
+//        int fromJ = Controller.fileToInd(fromPos);
+//        int toI = Controller.rankToInd(toPos);
+//        int toJ = Controller.fileToInd(toPos);
+//
+//        if(isWhiteTurn){
+//            if(newBoard.GBoard[toI][toJ] == null){
+//                Gamepiece movingPiece = newBoard.GBoard[fromI][fromJ];
+//                int newMC = movingPiece.getMoveCount() + 1;
+//                movingPiece.setMoveCount(newMC);
+//                movingPiece.setPosition(toPos.toLowerCase());
+//                movingPiece.setPiece(promo);
+//
+//                newBoard.GBoard[toI][toJ] = movingPiece;
+//                newBoard.GBoard[fromI][fromJ] = null;
+//                int pieceIndex = -1;
+//                for(int i = 0; i<newBoard.getwhitePieceList().size(); i++){
+//                    if(newBoard.getwhitePieceList().get(i).equalsIgnoreCase(fromPos)){
+//                        pieceIndex = i;
+//                        break;
+//                    }
+//                }
+//                newBoard.getwhitePieceList().remove(pieceIndex);
+//                newBoard.getwhitePieceList().add(movingPiece.getPosition());
+//
+//                newBoard.lastPieceMoved = movingPiece;
+//                newBoard.updateMoves();
+//
+//                return newBoard;
+//            }
+//            else{
+//                int blackPieceInd = -1;
+//                for(int i = 0; i<newBoard.getblackPiecelist().size(); i++){
+//                    if(newBoard.getblackPiecelist().get(i).equalsIgnoreCase(toPos)){
+//                        blackPieceInd = i;
+//                        break;
+//                    }
+//                }
+//                newBoard.getblackPiecelist().remove(blackPieceInd);
+//
+//                Gamepiece movingPiece = newBoard.GBoard[fromI][fromJ];
+//                int newMC = movingPiece.getMoveCount() + 1;
+//                movingPiece.setMoveCount(newMC);
+//                movingPiece.setPosition(toPos.toLowerCase());
+//                movingPiece.setPiece(promo);
+//
+//                newBoard.GBoard[toI][toJ] = movingPiece;
+//                newBoard.GBoard[fromI][fromJ] = null;
+//                int pieceIndex = -1;
+//                for(int i = 0; i<newBoard.getwhitePieceList().size(); i++){
+//                    if(newBoard.getwhitePieceList().get(i).equalsIgnoreCase(fromPos)){
+//                        pieceIndex = i;
+//                        break;
+//                    }
+//                }
+//                newBoard.getwhitePieceList().remove(pieceIndex);
+//                newBoard.getwhitePieceList().add(movingPiece.getPosition());
+//
+//                newBoard.lastPieceMoved = movingPiece;
+//                newBoard.updateMoves();
+//
+//                return newBoard;
+//            }
+//        }
+//        else{
+//            if(newBoard.GBoard[toI][toJ] == null){
+//                Gamepiece movingPiece = newBoard.GBoard[fromI][fromJ];
+//                int newMC = movingPiece.getMoveCount() + 1;
+//                movingPiece.setMoveCount(newMC);
+//                movingPiece.setPosition(toPos.toLowerCase());
+//                movingPiece.setPiece(promo);
+//
+//                newBoard.GBoard[toI][toJ] = movingPiece;
+//                newBoard.GBoard[fromI][fromJ] = null;
+//                int pieceIndex = -1;
+//                for(int i = 0; i<newBoard.getblackPiecelist().size(); i++){
+//                    if(newBoard.getblackPiecelist().get(i).equalsIgnoreCase(fromPos)){
+//                        pieceIndex = i;
+//                        break;
+//                    }
+//                }
+//                newBoard.getblackPiecelist().remove(pieceIndex);
+//                newBoard.getblackPiecelist().add(movingPiece.getPosition());
+//
+//                newBoard.lastPieceMoved = movingPiece;
+//                newBoard.updateMoves();
+//
+//                return newBoard;
+//            }
+//            else{
+//                int whitePieceInd = -1;
+//                for(int i = 0; i<newBoard.getwhitePieceList().size(); i++){
+//                    if(newBoard.getwhitePieceList().get(i).equalsIgnoreCase(toPos)){
+//                        whitePieceInd = i;
+//                        break;
+//                    }
+//                }
+//                newBoard.getwhitePieceList().remove(whitePieceInd);
+//
+//                Gamepiece movingPiece = newBoard.GBoard[fromI][fromJ];
+//                int newMC = movingPiece.getMoveCount() + 1;
+//                movingPiece.setMoveCount(newMC);
+//                movingPiece.setPosition(toPos.toLowerCase());
+//                movingPiece.setPiece(promo);
+//
+//                newBoard.GBoard[toI][toJ] = movingPiece;
+//                newBoard.GBoard[fromI][fromJ] = null;
+//                int pieceIndex = -1;
+//                for(int i = 0; i<newBoard.getblackPiecelist().size(); i++){
+//                    if(newBoard.getblackPiecelist().get(i).equalsIgnoreCase(fromPos)){
+//                        pieceIndex = i;
+//                        break;
+//                    }
+//                }
+//                newBoard.getblackPiecelist().remove(pieceIndex);
+//                newBoard.getblackPiecelist().add(movingPiece.getPosition());
+//
+//                newBoard.lastPieceMoved = movingPiece;
+//                newBoard.updateMoves();
+//
+//                return newBoard;
+//            }
+//        }
+//    }
 
     public static void getRecommendation(Board gameBoard, boolean isWhite){
 
