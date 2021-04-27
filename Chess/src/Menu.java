@@ -134,6 +134,7 @@ public class Menu {
 					String fileName=createNewDual();
 					DDual dual= new DDual(Main.userID, fileName);
 					dual.start();
+					d_index=0;
 					break;
 				case 2:	//Next 출력
 					dl_index+=1;
@@ -205,7 +206,9 @@ public class Menu {
 			   if(d_input.matches("[+-]?\\d*(\\.\\d+)?")&&dfileIndex>=0&&dfileIndex<dFileList.length) {	//입력이 2 이상의 선택 가능한 자연수일 경우
 				   String dFileName=dFileList[dfileIndex].getName();
 				   String[] dFileNameSplit=dFileName.split("_");
-				   File t_file=new File(dFileName);
+				   String dWholeFileName="./DualMode/";
+				   dWholeFileName+=dFileName;
+				   File t_file=new File("./DualMode/"+dFileName);
 				   FileReader filereader=null;
 				try {
 					filereader = new FileReader(t_file);
@@ -218,17 +221,12 @@ public class Menu {
 	               String line2="";
 	               try {
 					line1 = bufReader.readLine();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}	//한줄을 읽어와서 line에 저장
-	               try {
 					line2=bufReader.readLine();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
-				   if(dFileNameSplit[0].equals("2p 대기중")) {	//플레이어 한명이 정해지지 않았을 경우
+				}	//한줄을 읽어와서 line에 저장
+				   if(dFileNameSplit[0].equals("2p를 기다리는중")) {	//플레이어 한명이 정해지지 않았을 경우
 					   return 5;
 				   }else if(line1.equals(Main.userID)||line2.equals(Main.userID)){	//플레이어가 2명이고 그중에 한명이 자신일 경우
 					   return 5;
@@ -401,97 +399,6 @@ public class Menu {
         }
 		return fileName;
 	}
-//	
-//	String createNewPuzzle() {	//새 퍼즐파일을 생성해서 저장하기
-//		String fileName="./PuzzleMode/";	//파일이 저장되는 경로. 
- //       fileName += "testing.txt";	//실제 파일 이름을 추가
-//		try{            
- //           BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName, true));
- //           
- //           bufferedWriter.write("문자열 추가1"); //한줄 입력
- //           bufferedWriter.newLine();//개행문자쓰기(엔터키 입력)
-//            //위에 2줄을 반복하며 모든 정보를 저장함
-// 
-// 
-//            bufferedWriter.close();            
-//        }catch(Exception e){
- //           e.printStackTrace();
-//        }
-//		return fileName;
-//	}
-//	
-//	void readFile() {	//파일 읽어오기 
-//		try{
-//			int index=0;	//후에 만들 FileList에서 어떤 파일을 읽어오는지 알기위한 색인, 보통 함수 인자로 전달받음
-//			File path = new File("./DualMode");	//퍼즐파일의 경우 "./PuzzleMode"
-//			File fileList[]=path.listFiles();	//index와 마찬가지로 함수 인자로 전달받을 수 있음. 아예 특정 file을 전달받을수도 있음.
-//            FileReader filereader = new FileReader(fileList[index]);	//입력 스트림 생성
- //           BufferedReader bufReader = new BufferedReader(filereader);	 //입력 버퍼 생성
- //           String line = "";	//한줄씩 읽어와서 저장할 String변수
-//            
-//            
-//            
-//            line = bufReader.readLine();	//한줄을 읽어와서 line에 저장
-//            //여기다가 line에 저장한 내용을 어디에 저장할지를 지정
- //           //위에 2줄을 필요한 변수들을 모두 읽어올때까지 반복
- //           
-//            
-//            
- //           bufReader.close();
- //       }catch (FileNotFoundException e) {
-//            // TODO: handle exception
- //       }catch(IOException e){
- //           System.out.println(e);
- //       }
-//    }
-//	
-//	void saveFile() {	//기존 파일에 파일 저장하기(특정 변수만 저장하는게 아닌 모든 정보를 덮어씌우는 방식!)
-//		try{
-//			int index=0;	//후에 만들 FileList에서 어떤 파일에 저장할지 알기위한 색인, 보통 함수 인자로 전달받음
-//			File path = new File("./DualMode");	//퍼즐파일의 경우 "./PuzzleMode"
-//			File fileList[]=path.listFiles();	//index와 마찬가지로 함수 인자로 전달받을 수 있음. 아예 특정 file을 전달받을수도 있음.
- //           BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileList[index]));
-  //          
-   //         if(fileList[index].isFile() && fileList[index].canWrite()){
-    //        	
- //           	
-  //          	
-   //             bufferedWriter.write("문자열 추가1"); //한줄 입력
-    //            bufferedWriter.newLine();//개행문자쓰기(엔터키 입력)
-     //           //위에 2줄을 반복하며 모든 정보를 저장함
-  //              
- //               
- //               
-  //              bufferedWriter.close();
-  //          }
-//
-//
-//
-  //      }catch (FileNotFoundException e) {
- //           // TODO: handle exception
- //       }catch(IOException e){
-  //          System.out.println(e);
-   //     }
-//		
-//	}
-//	
-//	void createNewFile() {	//새 파일을 생성해서 저장하기-사용 안함!!!!!
-//		try{
-//           String fileName="./DualMode/";	//파일이 저장되는 경로. 퍼즐게임의 경우 "./PuzzleMode/" 임
-//           fileName += "testing.txt";	//실제 파일 이름을 추가
- //           
-  //          BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName, true));
-   //         
-    //        bufferedWriter.write("문자열 추가1"); //한줄 입력
-    //        bufferedWriter.newLine();//개행문자쓰기(엔터키 입력)
-     //       //위에 2줄을 반복하며 모든 정보를 저장함
-// 
-// 
- //           bufferedWriter.close();            
-  //      }catch(Exception e){
-   //         e.printStackTrace();
-    //    }
-//	}
 	
 //	void changeFileName() {	//파일 이름 변경하기-사용 안함!
 //		int index=0;	//후에 만들 FileList에서 어떤 파일이름을 변경할지 알기위한 색인, 보통 함수 인자로 전달받음
