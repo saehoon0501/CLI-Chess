@@ -1,0 +1,70 @@
+2수메이트
+변세훈
+2
+h4 e4,a4 e4,e7 f5,e4 e8,
+변세훈
+ 
+null
+null
+null
+♚ d1 w 0
+null
+null
+null
+null
+null
+null
+null
+♟ d2 w 0
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+♜ a4 w 0
+null
+null
+null
+♟ e4 w 0
+null
+null
+♛ h4 b 0
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+♞ e7 b 0
+♟ f7 b 0
+♟ g7 b 0
+♟ h7 b 0
+null
+null
+null
+null
+null
+null
+♚ g8 b 0
+null
