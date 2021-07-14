@@ -15,30 +15,10 @@ import java.util.Scanner;
 public class Menu {
    Scanner m_scanner=new Scanner(System.in);
    //public static String id=null;
-   public static void clearScreen(){   //화면 지움
-//      try
-//       {
-//           final String os = System.getProperty("os.name");
-//           if (os.contains("Windows"))
-//           {
-//               Runtime.getRuntime().exec("cls");
-//           }
-//           else
-//           {
-//               Runtime.getRuntime().exec("clear");
-//           }
-//       }
-//       catch (final Exception e)
-//       {
-//           //  Handle any exceptions.
-//       }
-//     System.out.println("\033[H\033[2J");
-//      System.out.flush();
-   }
+
    int loginMenu() throws IOException {   //로그인메뉴
       int l_index=1;
       while(l_index!=0) {
-         clearScreen();
          System.out.print("이름을 입력해 주세요>");
          String input=m_scanner.nextLine();
          l_index=checkIInput(input);
@@ -51,7 +31,6 @@ public class Menu {
                mainMenu();
                break;
             case 3:   //잘못된 이름. 에러 메시지 출력후 반복
-               clearScreen();
                System.out.println("잘못된 이름 입력입니다.");
                try {
                   Thread.sleep(2000);
@@ -83,7 +62,6 @@ public class Menu {
    void mainMenu() throws IOException{   //메인메뉴
       int m_index=-1;
       while(m_index!=0){
-         clearScreen();
          System.out.println("1.대전메뉴 2.퍼즐메뉴 3.로그아웃");
          String m_input=m_scanner.nextLine();
          m_index=checkMInput(m_input);
@@ -98,7 +76,6 @@ public class Menu {
                m_index=0;
                break;
             default:
-               clearScreen();
                System.out.println("잘못된 입력입니다.");
                try {
                   Thread.sleep(2000);
@@ -129,7 +106,6 @@ public class Menu {
       int d_index=-1;
       int dl_index=0;
       while(d_index!=0){
-         clearScreen();
          printDualList(dl_index);
          String d_input=m_scanner.nextLine();
          d_index=checkDInput(d_input, dl_index);
@@ -327,7 +303,6 @@ public class Menu {
       System.out.println();
    }
    void puzzleMenu() {   //퍼즐메뉴
-      clearScreen();
       PuzzleMain foo = new PuzzleMain();
       try {
          foo.start();

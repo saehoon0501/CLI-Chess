@@ -92,6 +92,7 @@ public class Puzzle extends Board{
 					else
 					{
 						Gamepiece gp = new Gamepiece();
+
 						gp.setPiece(str.substring(0,1));
 						gp.setPosition(str.substring(2,4));
 						gp.setPlayer(str.substring(5,6));

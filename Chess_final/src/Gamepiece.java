@@ -23,9 +23,6 @@ public class Gamepiece{
     //Getters and Setters
 
     public String getPiece(){
-        if(this.piece.equals("♝︎")){
-            this.piece = "B";
-        }
         return this.piece;
     }
 
@@ -43,7 +40,7 @@ public class Gamepiece{
                 newPiece = "♞";
             this.piece = newPiece;
             return true;
-        }else if (newPiece.equals("♝︎") ||newPiece.equals("비숍") ||newPiece.equalsIgnoreCase("b")|| newPiece.equalsIgnoreCase("Bishop")){
+        }else if (newPiece.equals("♝︎") ||newPiece.equals("비숍") ||newPiece.equalsIgnoreCase("B")|| newPiece.equalsIgnoreCase("Bishop")){
                 newPiece = "♝︎";
             this.piece = newPiece;
             return true;

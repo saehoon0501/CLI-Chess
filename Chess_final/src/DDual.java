@@ -58,7 +58,6 @@ public class DDual {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
-            Menu.clearScreen();
             bufferedReader = new BufferedReader(new FileReader(file));
             name1=bufferedReader.readLine();
             name2 = bufferedReader.readLine();

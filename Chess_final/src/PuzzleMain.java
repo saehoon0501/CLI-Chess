@@ -48,7 +48,7 @@ public class PuzzleMain {
                     puzzle.setHasBeenSolved(false);
                     if(puzzle.cleared.contains(Main.userID))
                         puzzle.setHasBeenSolved(true);
-                    //파일을 읽어와서 퍼즐 객체 생성(수정했어요)
+                    //파일을 읽어와서 퍼즐 객체 생성
                     String myFileName = "PuzzleMode"+"/"+fName.get(Integer.parseInt(p_input)-2);
 
                     while(!myFileName.equals("")) {
@@ -57,9 +57,6 @@ public class PuzzleMain {
                         puzzle.setHasBeenSolved(false);
                         if(puzzle.cleared.contains(Main.userID))
                             puzzle.setHasBeenSolved(true);
-                        //파일을 읽어와서 퍼즐 객체 생성(수정했어요)
-
-
 
                         String str = playPuzzle(puzzle, fName, myFileName);
                         if(!str.equals("")) {
@@ -77,42 +74,7 @@ public class PuzzleMain {
                     break;
             }
         }
-        //-------------------------------------------------
-        //printPuzzles(this.puzzles);
-        //Scanner scanner = new Scanner(System.in);
-        //String input = scanner.nextLine();
-        //while(!input.matches("[0-9]+") || input.length()!=1)
-        //{
-        //   System.err.println("잘못된 입력입니다.");
-        //   input = scanner.nextLine();
-        //}
-        //int inputNum = Integer.parseInt(input);
-        //if(inputNum ==1)
-        //{
-        //   PuzzleControl puzzleControl = new PuzzleControl();
-        //    puzzleControl.start();
-        //}
-        //else if(inputNum>=2 && inputNum<=15)
-        //{
-        //   //파일을 읽어와서 퍼즐 객체 생성
-        //   Puzzle puzzle = new Puzzle("PuzzleMode"+"/"+fName.get(inputNum-2));
-        //   puzzle.setHasBeenSolved(false);
-        //   if(puzzle.cleared.contains(Main.userID))
-        //      puzzle.setHasBeenSolved(true);
-        //   //파일을 읽어와서 퍼즐 객체 생성(수정했어요)
-        //   String myFileName = "PuzzleMode"+"/"+fName.get(inputNum-2);
-        //
-        //   while(!myFileName.equals("")) {
-        //      String str = playPuzzle(puzzle, fName, myFileName);
-        //      if(!str.equals("")) {
-        //          myFileName = "PuzzleMode"+"/"+str;
-        //       }
-        //       else {
-        //          myFileName = "";
-        //       }
-        //   }
-        //
-        //}
+
     }
 
     int checkPInput(String input, int pl_index) {   //퍼즐메뉴에서의 사용자 입력이 문법 규칙에 맞는지 확인
@@ -175,38 +137,12 @@ public class PuzzleMain {
             index++;
         }
         System.out.println("[Back, Next]");
-        //System.out.println("1.새 퍼즐 생성");
-        //File dir = new File("PuzzleMode");
-        //File[] filesList = dir.listFiles();
-        //int i=findex*14;
-        //int k=1;
-        //while(k!=14) {
-        //   File file=filesList[i];
-        //    if (file.isFile() && !file.getName().equals(".DS_Store")){
-        //      Puzzle puzzle = new Puzzle("PuzzleMode/"+file.getName());
-        //   System.out.println((i+2)+"."+file.getName()+"   퍼즐이름:"+puzzle.getName()+" 제작자 이름:"+puzzle.getUserName()+" 테마:"+puzzle.getTheme()
-        //   +" 클리어 여부:"+puzzle.cleared.contains(Main.userID));
-        // fName.add(file.getName());
-        // i++;
-        // k++;
-        // }else if(file.getName().equals(".DS_Store")) {
-        //     i++;
-        // }else {
-        //    System.out.println();
-        //    k++;
-        // }
-        // }
-        //System.out.println("[Back, Next]");
+
     }
     public String playPuzzle(Puzzle myPuzzle, ArrayList<String> fName, String myFileName) throws FileNotFoundException {
         Board boardOriginal = myPuzzle.getPuzzleBoard();
         Board boardTemp = copyBoard(boardOriginal);
 
-        // 화면 clear
-//          System.out.println("\033[H\033[2J");
-//           System.out.flush();
-
-        //boardTemp.printBoard();
         int turn = myPuzzle.getTheme() * 2;
         int moveCount = 0;
         boolean myWhite = false;
@@ -219,8 +155,7 @@ public class PuzzleMain {
         System.out.println("Puzzle name: "+myPuzzle.getName());
 
         while(turn > 0) {
-//              System.out.println("Welcome to Puzzle Play\n");
-//              System.out.println("Puzzle name: "+myPuzzle.getName());
+
             String moveToken[];
 
             if(turn%2 == 0) {

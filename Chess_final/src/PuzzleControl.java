@@ -218,8 +218,6 @@ public class PuzzleControl {
         }catch (ArrayIndexOutOfBoundsException e){
             System.out.println("존재하지 않는 명령어 입니다.");
         }
-
-
     }
 
     public void delete(Board gameBoard, String inputarray[]){ // 기물 삭제 커맨드
@@ -547,6 +545,10 @@ public class PuzzleControl {
                         fw.println("null");
                     else
                     {
+                        if(this.reset.GBoard[r][c].getPiece().equals("♝︎"))
+                            fw.println("B"+" "+this.reset.GBoard[r][c].getPosition()+" "
+                                    +this.reset.GBoard[r][c].getPlayer()+" "+this.reset.GBoard[r][c].getMoveCount());
+                        else
                             fw.println(this.reset.GBoard[r][c].getPiece()+" "+this.reset.GBoard[r][c].getPosition()+" "
                                     +this.reset.GBoard[r][c].getPlayer()+" "+this.reset.GBoard[r][c].getMoveCount());
                     }
