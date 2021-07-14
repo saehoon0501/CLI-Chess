@@ -43,7 +43,7 @@ public class PuzzleMain {
                     break;
                 case 5:   //2 이상이고 선택 가능한 자연수를 입력
                     p_input=p_input.replaceAll("\\p{Z}", "");   //입력에서 모든 공백 제거
-                    //해당 파일을 읽어와 객체 생성및 구현(p_input에서 -2해야함, 클래스 내부에서 해당 이름으로 참가가 가능한지도 확인해야함)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    //해당 파일을 읽어와 객체 생성및 구현(p_input에서 -2해야함, 클래스 내부에서 해당 이름으로 참가가 가능한지도 확인해야함)
                     Puzzle puzzle = new Puzzle("PuzzleMode"+"/"+fName.get(Integer.parseInt(p_input)-2));
                     puzzle.setHasBeenSolved(false);
                     if(puzzle.cleared.contains(Main.userID))
@@ -234,9 +234,6 @@ public class PuzzleMain {
                 }
                 int i = Controller.rankToInd(moveToken[0]);
                 int j = Controller.fileToInd(moveToken[0]);
-                System.out.println("\t\t:"+moveToken[0]);
-                System.out.println(boardTemp.GBoard[0][3].getPiece());
-                System.out.println(i+"   \t   "+j);
                 switch(boardTemp.GBoard[i][j].getPiece())
                 {
                     case "♙":

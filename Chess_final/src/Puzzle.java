@@ -79,12 +79,6 @@ public class Puzzle extends Board{
 				}
 				else if(numLine ==5)
 				{
-//		    		Gamepiece temp = new Gamepiece();
-//		    		temp.setPiece(str.substring(0,1));
-//		    		temp.setPosition(str.substring(2,4));
-//		    		temp.setPlayer(str.substring(5,6));
-//		    		temp.setMoveCount(Integer.parseInt(str.substring(7,8)));
-//		    		puzzleBoard.lastPieceMoved= temp;
 					puzzleBoard.lastPieceMoved= new Gamepiece();
 					numLine++;
 				}
@@ -98,11 +92,11 @@ public class Puzzle extends Board{
 					else
 					{
 						Gamepiece gp = new Gamepiece();
-						gp.setPlayer(str.substring(5,6));
 						gp.setPiece(str.substring(0,1));
 						gp.setPosition(str.substring(2,4));
-						gp.setMoveCount(Integer.parseInt(str.substring(7,8)));
-						puzzleBoard.GBoard[Controller.rankToInd(str.substring(2,4))][Controller.fileToInd(str.substring(2,4))]=gp;
+						gp.setPlayer(str.substring(5,6));
+						gp.setMoveCount(Integer.parseInt("0"));
+						puzzleBoard.GBoard[Controller.rankToInd(gp.getPosition())][Controller.fileToInd(gp.getPosition())]=gp;
 						numLine++;
 					}
 				}

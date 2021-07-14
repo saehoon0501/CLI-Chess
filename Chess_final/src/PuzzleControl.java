@@ -405,7 +405,7 @@ public class PuzzleControl {
                     }
                 }else if (input.equalsIgnoreCase("Next") || input.equalsIgnoreCase("Nx") || input.equals("다음")){
                     kingPos(result).createMoveSet(result);
-                    if (this.puzzleFile.getTheme() - count == 0 && this.isCheck(result)) {
+                    if (this.puzzleFile.getTheme() - count == 0) {
                         this.control = false;
                     }
                     else {
@@ -485,21 +485,21 @@ public class PuzzleControl {
 //    }
 
 
-    public boolean isCheck(Board chess){
-        System.out.println(chess.getwhitePieceList());
-        for(String h:chess.getwhitePieceList()){
-            int i = Controller.rankToInd(h);
-            int j = Controller.fileToInd(h);
-            ArrayList<String> pieceMoves = chess.GBoard[i][j].getMoves();
-
-            for(int x = 0; x<pieceMoves.size();x++){
-                if(pieceMoves.get(x).equalsIgnoreCase(this.kingPos(chess).getPosition())){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+//    public boolean isCheck(Board chess){
+//        System.out.println(chess.getwhitePieceList());
+//        for(String h:chess.getwhitePieceList()){
+//            int i = Controller.rankToInd(h);
+//            int j = Controller.fileToInd(h);
+//            ArrayList<String> pieceMoves = chess.GBoard[i][j].getMoves();
+//
+//            for(int x = 0; x<pieceMoves.size();x++){
+//                if(pieceMoves.get(x).equalsIgnoreCase(this.kingPos(chess).getPosition())){
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
 
     //4번째 파일 이름 선택 후 data output in String format using java.io
@@ -547,8 +547,8 @@ public class PuzzleControl {
                         fw.println("null");
                     else
                     {
-                        fw.println(this.reset.GBoard[r][c].getPiece()+" "+this.reset.GBoard[r][c].getPosition()+" "
-                                +this.reset.GBoard[r][c].getPlayer()+" "+this.reset.GBoard[r][c].getMoveCount());
+                            fw.println(this.reset.GBoard[r][c].getPiece()+" "+this.reset.GBoard[r][c].getPosition()+" "
+                                    +this.reset.GBoard[r][c].getPlayer()+" "+this.reset.GBoard[r][c].getMoveCount());
                     }
                 }
             }

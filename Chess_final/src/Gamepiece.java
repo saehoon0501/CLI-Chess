@@ -23,6 +23,9 @@ public class Gamepiece{
     //Getters and Setters
 
     public String getPiece(){
+        if(this.piece.equals("♝︎")){
+            this.piece = "B";
+        }
         return this.piece;
     }
 
@@ -134,117 +137,119 @@ public class Gamepiece{
 
         if(this.getPiece().equalsIgnoreCase("P") || this.getPiece().equals("♟") ||
         		this.getPiece().equals("♙")){
-            int pieceI = Controller.rankToInd(this.getPosition());
-            int pieceJ = Controller.fileToInd(this.getPosition());
-            String tempMove = "";
+            try {
+                int pieceI = Controller.rankToInd(this.getPosition());
+                int pieceJ = Controller.fileToInd(this.getPosition());
+                String tempMove = "";
 
-            if(this.getPlayer().equalsIgnoreCase("w")){ //CASE: White
+                if (this.getPlayer().equalsIgnoreCase("w")) { //CASE: White
 
-                if(this.getMoveCount() == 0){ //If this is the pawns first move, it can move 2 spaces ahead
-                    if((currentBoard.GBoard[pieceI+1][pieceJ] == null) &&
-                            (currentBoard.GBoard[pieceI+2][pieceJ] == null)){
-                        tempMove = Controller.indToPos(pieceI + 2, pieceJ);
+                    if (this.getMoveCount() == 0) { //If this is the pawns first move, it can move 2 spaces ahead
+                        if ((currentBoard.GBoard[pieceI + 1][pieceJ] == null) &&
+                                (currentBoard.GBoard[pieceI + 2][pieceJ] == null)) {
+                            tempMove = Controller.indToPos(pieceI + 2, pieceJ);
+                            this.moves.add(tempMove);
+                        }
+                    }
+
+                    if (currentBoard.GBoard[pieceI + 1][pieceJ] == null) { //If the space in front of the pawn is free, it can move there.
+                        tempMove = Controller.indToPos(pieceI + 1, pieceJ);
                         this.moves.add(tempMove);
                     }
-                }
 
-                if(currentBoard.GBoard[pieceI+1][pieceJ] == null){ //If the space in front of the pawn is free, it can move there.
-                    tempMove = Controller.indToPos(pieceI + 1, pieceJ);
-                    this.moves.add(tempMove);
-                }
-
-                if((pieceJ+1) < 8){ //If the space to the diagonal of the pawn holds an opponent's piece, it can take it
-                    if(currentBoard.GBoard[pieceI+1][pieceJ+1] != null){
-                        if(currentBoard.GBoard[pieceI+1][pieceJ+1].getPlayer().equalsIgnoreCase("b")){
-                            tempMove = Controller.indToPos(pieceI+1, pieceJ+1);
-                            this.moves.add(tempMove);
-                        }
-                    }
-                }
-
-                if((pieceJ-1) > -1){ //Other diagonal
-                    if(currentBoard.GBoard[pieceI+1][pieceJ-1] != null){
-                        if(currentBoard.GBoard[pieceI+1][pieceJ-1].getPlayer().equalsIgnoreCase("b")){
-                            tempMove = Controller.indToPos(pieceI+1, pieceJ-1);
-                            this.moves.add(tempMove);
-                        }
-                    }
-                }
-
-                //En passant
-
-                if(pieceI == 4){ //If the pawn is on the 5th rank, it has a chance of capturing en passant
-                    //If last piece moved is a pawn to either file next to the pawn on rank 5, make en passant a valid move
-                    if(Controller.fileToInd(currentBoard.lastPieceMoved.getPosition()) == (pieceJ + 1)){
-                        if(currentBoard.lastPieceMoved.getPiece().equalsIgnoreCase("♟") && currentBoard.lastPieceMoved.movecount == 1){
-                            tempMove = Controller.indToPos(pieceI+1, pieceJ+1);
-                            this.moves.add(tempMove);
+                    if ((pieceJ + 1) < 8) { //If the space to the diagonal of the pawn holds an opponent's piece, it can take it
+                        if (currentBoard.GBoard[pieceI + 1][pieceJ + 1] != null) {
+                            if (currentBoard.GBoard[pieceI + 1][pieceJ + 1].getPlayer().equalsIgnoreCase("b")) {
+                                tempMove = Controller.indToPos(pieceI + 1, pieceJ + 1);
+                                this.moves.add(tempMove);
+                            }
                         }
                     }
 
-                    if(Controller.fileToInd(currentBoard.lastPieceMoved.getPosition()) == (pieceJ - 1)){
-                        if(currentBoard.lastPieceMoved.getPiece().equalsIgnoreCase("♟") && currentBoard.lastPieceMoved.movecount == 1){
-                            tempMove = Controller.indToPos(pieceI+1, pieceJ-1);
+                    if ((pieceJ - 1) > -1) { //Other diagonal
+                        if (currentBoard.GBoard[pieceI + 1][pieceJ - 1] != null) {
+                            if (currentBoard.GBoard[pieceI + 1][pieceJ - 1].getPlayer().equalsIgnoreCase("b")) {
+                                tempMove = Controller.indToPos(pieceI + 1, pieceJ - 1);
+                                this.moves.add(tempMove);
+                            }
+                        }
+                    }
+
+                    //En passant
+
+                    if (pieceI == 4) { //If the pawn is on the 5th rank, it has a chance of capturing en passant
+                        //If last piece moved is a pawn to either file next to the pawn on rank 5, make en passant a valid move
+                        if (Controller.fileToInd(currentBoard.lastPieceMoved.getPosition()) == (pieceJ + 1)) {
+                            if (currentBoard.lastPieceMoved.getPiece().equalsIgnoreCase("♟") && currentBoard.lastPieceMoved.movecount == 1) {
+                                tempMove = Controller.indToPos(pieceI + 1, pieceJ + 1);
+                                this.moves.add(tempMove);
+                            }
+                        }
+
+                        if (Controller.fileToInd(currentBoard.lastPieceMoved.getPosition()) == (pieceJ - 1)) {
+                            if (currentBoard.lastPieceMoved.getPiece().equalsIgnoreCase("♟") && currentBoard.lastPieceMoved.movecount == 1) {
+                                tempMove = Controller.indToPos(pieceI + 1, pieceJ - 1);
+                                this.moves.add(tempMove);
+                            }
+                        }
+                    }
+
+                } else { //Repeat all pawn options for black
+
+                    if (this.getMoveCount() == 0) {
+                        if ((currentBoard.GBoard[pieceI - 1][pieceJ] == null) &&
+                                (currentBoard.GBoard[pieceI - 2][pieceJ] == null)) {
+                            tempMove = Controller.indToPos(pieceI - 2, pieceJ);
                             this.moves.add(tempMove);
                         }
                     }
-                }
 
-            }
-            else{ //Repeat all pawn options for black
-
-                if(this.getMoveCount() == 0){
-                    if((currentBoard.GBoard[pieceI-1][pieceJ] == null) &&
-                            (currentBoard.GBoard[pieceI-2][pieceJ] == null)){
-                        tempMove = Controller.indToPos(pieceI - 2, pieceJ);
+                    if (currentBoard.GBoard[pieceI - 1][pieceJ] == null) {
+                        tempMove = Controller.indToPos(pieceI - 1, pieceJ);
                         this.moves.add(tempMove);
                     }
-                }
 
-                if(currentBoard.GBoard[pieceI-1][pieceJ] == null){
-                    tempMove = Controller.indToPos(pieceI - 1, pieceJ);
-                    this.moves.add(tempMove);
-                }
-
-                if((pieceJ-1) > -1){
-                    if(currentBoard.GBoard[pieceI-1][pieceJ-1] != null){
-                        if(currentBoard.GBoard[pieceI-1][pieceJ-1].getPlayer().equalsIgnoreCase("w")){
-                            tempMove = Controller.indToPos(pieceI-1, pieceJ-1);
-                            this.moves.add(tempMove);
-                        }
-                    }
-                }
-
-                if((pieceJ+1) < 8){
-                    if(currentBoard.GBoard[pieceI-1][pieceJ+1] != null){
-                        if(currentBoard.GBoard[pieceI-1][pieceJ+1].getPlayer().equalsIgnoreCase("w")){
-                            tempMove = Controller.indToPos(pieceI-1, pieceJ+1);
-                            this.moves.add(tempMove);
-                        }
-                    }
-                }
-
-                //En passant
-
-                if(pieceI == 3){
-                    if((Controller.rankToInd(currentBoard.lastPieceMoved.getPosition()) == pieceI) &&
-                            (Controller.fileToInd(currentBoard.lastPieceMoved.getPosition()) == (pieceJ + 1))){
-                        if(currentBoard.lastPieceMoved.getPiece().equalsIgnoreCase("p") && currentBoard.lastPieceMoved.movecount == 1){
-                            tempMove = Controller.indToPos(pieceI-1, pieceJ+1);
-                            this.moves.add(tempMove);
+                    if ((pieceJ - 1) > -1) {
+                        if (currentBoard.GBoard[pieceI - 1][pieceJ - 1] != null) {
+                            if (currentBoard.GBoard[pieceI - 1][pieceJ - 1].getPlayer().equalsIgnoreCase("w")) {
+                                tempMove = Controller.indToPos(pieceI - 1, pieceJ - 1);
+                                this.moves.add(tempMove);
+                            }
                         }
                     }
 
-                    if((Controller.rankToInd(currentBoard.lastPieceMoved.getPosition()) == pieceI) &&
-                            (Controller.fileToInd(currentBoard.lastPieceMoved.getPosition()) == (pieceJ - 1))){
-                        if(currentBoard.lastPieceMoved.getPiece().equalsIgnoreCase("p") && currentBoard.lastPieceMoved.movecount == 1){
-                            tempMove = Controller.indToPos(pieceI-1, pieceJ-1);
-                            this.moves.add(tempMove);
+                    if ((pieceJ + 1) < 8) {
+                        if (currentBoard.GBoard[pieceI - 1][pieceJ + 1] != null) {
+                            if (currentBoard.GBoard[pieceI - 1][pieceJ + 1].getPlayer().equalsIgnoreCase("w")) {
+                                tempMove = Controller.indToPos(pieceI - 1, pieceJ + 1);
+                                this.moves.add(tempMove);
+                            }
+                        }
+                    }
+
+                    //En passant
+
+                    if (pieceI == 3) {
+                        if ((Controller.rankToInd(currentBoard.lastPieceMoved.getPosition()) == pieceI) &&
+                                (Controller.fileToInd(currentBoard.lastPieceMoved.getPosition()) == (pieceJ + 1))) {
+                            if (currentBoard.lastPieceMoved.getPiece().equalsIgnoreCase("p") && currentBoard.lastPieceMoved.movecount == 1) {
+                                tempMove = Controller.indToPos(pieceI - 1, pieceJ + 1);
+                                this.moves.add(tempMove);
+                            }
+                        }
+
+                        if ((Controller.rankToInd(currentBoard.lastPieceMoved.getPosition()) == pieceI) &&
+                                (Controller.fileToInd(currentBoard.lastPieceMoved.getPosition()) == (pieceJ - 1))) {
+                            if (currentBoard.lastPieceMoved.getPiece().equalsIgnoreCase("p") && currentBoard.lastPieceMoved.movecount == 1) {
+                                tempMove = Controller.indToPos(pieceI - 1, pieceJ - 1);
+                                this.moves.add(tempMove);
+                            }
                         }
                     }
                 }
+            }catch (NullPointerException e){
+                System.out.println("");
             }
-
         }
         
       //CASE: Rook

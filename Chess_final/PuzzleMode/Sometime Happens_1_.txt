@@ -1,0 +1,70 @@
+Sometime Happens
+변세훈
+1
+g8 f6,d5 f7,
+★
+ 
+♜ a1 w 0
+null
+B c1 w 0
+null
+♚ e1 w 0
+null
+♞ g1 w 0
+♜ h1 w 0
+♟ a2 w 0
+null
+♟ c2 w 0
+null
+null
+♟ f2 w 0
+♟ g2 w 0
+♟ h2 w 0
+null
+null
+♟ c3 w 0
+null
+null
+null
+null
+null
+null
+null
+B c4 w 0
+null
+null
+null
+null
+null
+null
+null
+null
+♛ d5 w 0
+null
+null
+null
+null
+♟ a6 b 0
+null
+♞ c6 b 0
+null
+null
+null
+null
+null
+null
+♟ b7 b 0
+null
+B d7 b 0
+null
+♟ f7 b 0
+♟ g7 b 0
+♟ h7 b 0
+♜ a8 b 0
+null
+null
+♛ d8 b 0
+♚ e8 b 0
+null
+♞ g8 b 0
+♜ h8 b 0

@@ -1,21 +1,12 @@
-2수메이트
+Dribble
 변세훈
-2
-h4 e4,a4 e4,e7 f5,e4 e8,
-변세훈
+1
+b7 b8,a6 a8,
+*
  
 null
 null
 null
-♚ d1 w 0
-null
-null
-null
-null
-null
-null
-null
-♟ d2 w 0
 null
 null
 null
@@ -26,16 +17,13 @@ null
 null
 null
 null
+♜ f2 b 0
 null
 null
-♜ a4 w 0
 null
 null
 null
-♟ e4 w 0
-null
-null
-♛ h4 b 0
+♜ d3 b 0
 null
 null
 null
@@ -48,6 +36,7 @@ null
 null
 null
 null
+♜ a5 w 0
 null
 null
 null
@@ -55,16 +44,27 @@ null
 null
 null
 null
+♜ a6 w 0
 null
-♞ e7 b 0
-♟ f7 b 0
+♟ c6 w 0
+null
+♚ e6 w 0
+♟ f6 b 0
+♟ g6 w 0
+null
+null
+♚ b7 b 0
+♟ c7 b 0
+null
+null
+null
 ♟ g7 b 0
-♟ h7 b 0
 null
 null
 null
 null
 null
 null
-♚ g8 b 0
+null
+null
 null
