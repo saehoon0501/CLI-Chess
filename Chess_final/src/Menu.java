@@ -276,6 +276,7 @@ public class Menu {
          if(f.getName().equalsIgnoreCase(".DS_Store"))
             dFileList.remove(i);
       }
+      System.out.println("\n\n\n\n\n\n\n\n");
       System.out.println("1.새 게임");
       if(dFileList!=null) {
          for(int i=index*14; i<index*14+14; i++) {
