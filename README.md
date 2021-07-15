@@ -14,7 +14,7 @@ jar를 Extract하여 cmd창에서 실행 가능하다.
 2. 퍼즐 메뉴        
 ![PuzzleMenu](Images/PuzzleMenu.png)        
 
-### 1. 대전 모드        
+## 1. 대전 모드        
 ![Dual](Images/Dual.png)        
 
 두 명이서 대전 할 수 있는 모드      
@@ -30,11 +30,11 @@ jar를 Extract하여 cmd창에서 실행 가능하다.
 
 P1와 P2의 대전 모드 실행화면        
 
-### 2. 퍼즐 모드        
+## 2. 퍼즐 모드        
 직접 체스 퍼즐을 제작해 플레이할 수 있는 모드.      
 제작 or 기존 퍼즐을 플레이 할 수 있다.      
 
-1. 퍼즐 제작 모드     
+###  퍼즐 제작 모드     
 - 테마 선택     
 ![Theme](Images/Theme.png)      
 
@@ -69,7 +69,7 @@ P1와 P2의 대전 모드 실행화면
 ![Naming](Images/namingPuzzle.png)          
 퍼즐의 이름을 입력해준다.       
 
-2. 퍼즐 플레이          
+###  퍼즐 플레이          
 ![PuzzlePlay](Images/PuzzlePlay.png)            
 
 좌표 입력을 통해 퍼즐을 해결해본다.     
