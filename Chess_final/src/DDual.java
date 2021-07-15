@@ -20,9 +20,10 @@ public class DDual {
     DDual(String i_id, String i_FileName) {
         file=new File(i_FileName);
         userID=i_id;
-        turn=1;
+        turn=0;
         myColor=getMyturn(file);
     }
+
     public void start() throws IOException
     {
         String pos = "";
@@ -65,15 +66,16 @@ public class DDual {
         Board Chessboard = Controller.createBoard(); //Make the board
         System.out.println("");
         System.out.println(" "+name1+" vs "+name2);
-        if(turn%2==0)
-            System.out.println("   "+(turn-1)+"TURN - WHITE now");
+        if(turn%2==1)
+            System.out.println("   "+(turn)+" WHITE's Turn");
         else
-            System.out.println("   "+(turn-1)+"TURN - BLACK now");
+            System.out.println("   "+(turn)+" BLACK's Turn");
         Chessboard.printBoard(); //Print the board and some information about the game
         System.out.println("Welcome to Chess! Input -h for usage or a valid move to start");
         System.out.println("Players: \'w\' = white | \'b\' = black");
         System.out.println("Pieces: \'K\' = King | \'Q\' = Queen | \'R\' = Rook | \'B\' = Bishop | \'N\' = Knight | \'P\' = Pawn");
         System.out.println("");
+        System.out.println(myColor);
         boolean whiteTurn = true; //Turn boolean
 
         //User Interface
@@ -84,7 +86,7 @@ public class DDual {
 
             //Find the king and determine if checkmate, stalemate or check conditions exist
             //턴 읽어오기
-            if((turn-myColor)%2==0){//자기턴일때
+            if(turn%2==myColor){//자기턴일때
 
                 String s="";
                 try {
@@ -102,10 +104,10 @@ public class DDual {
                     int c = Controller.fileToInd(sToken[0]);
                     Chessboard = Controller.processMove(sToken[0], sToken[1], Chessboard, (turn%2==0));
                     System.out.println(" "+name1+" vs "+name2);
-                    if(turn%2==0)
-                        System.out.println("   "+(turn-1)+"TURN - WHITE now");
+                    if(turn%2==1)
+                        System.out.println("   "+(turn-1)+"WHITE's Turn");
                     else
-                        System.out.println("   "+(turn-1)+"TURN - BLACK now");
+                        System.out.println("   "+(turn-1)+"BLACK's Turn");
                     Chessboard.printBoard();
                     //////////////////////////////////
                 }
@@ -184,7 +186,6 @@ public class DDual {
                 //바꿈 white turn
                 if((turn%2==1)){
                     System.out.println("White's turn, please enter move: ");
-//                Controller.getRecommendation(Chessboard,whiteTurn);
                 }
                 else{
                     System.out.println("Black's turn, please enter move: ");
@@ -200,11 +201,6 @@ public class DDual {
                 String[] inputTokens = userInput.split(" ");
 
                 //If the user only entered one token, it could be help or resign
-
-
-
-
-
 
                 if(inputTokens.length == 1){
                     if((turn-myColor)%2==0)
@@ -334,13 +330,8 @@ public class DDual {
                     continue;
                 }
             }
-            if((turn-myColor)%2!=0)   //내 턴이 아니라 상대 플레이어 대기!(위에 작성함)
+            if(turn%2!=myColor)   //내 턴이 아니라 상대 플레이어 대기!
             {
-//                try {
-//                  Thread.sleep(500);
-//               }catch(InterruptedException e) {
-//                  e.printStackTrace();
-//               }
                 String lastLine=inputFile(file);
                 String[] sToken = lastLine.split(",");
                 turn=Integer.parseInt(sToken[1]);
@@ -348,6 +339,7 @@ public class DDual {
             }
         }
     }
+
     public void outputFile(File f, String move) throws IOException //죄표를 대전파일에 저장
     {
         Scanner sc = new Scanner(f);
@@ -364,8 +356,9 @@ public class DDual {
         bufferedWriter.newLine();//개행문자쓰기(엔터키 입력)
         bufferedWriter.write(line2); //한줄 입력
         bufferedWriter.newLine();//개행문자쓰기(엔터키 입력)
-        bufferedWriter.write(move+","+turn);
         turn++;
+        bufferedWriter.write(move+","+turn);
+
         bufferedWriter.close();
 
         Scanner sc2 = new Scanner(f);
@@ -375,6 +368,7 @@ public class DDual {
             buffer2.append(sc2.nextLine()+System.lineSeparator());
         }
     }
+
     public void appendLine(File f, String move) throws IOException
     {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(f,true));
@@ -389,6 +383,7 @@ public class DDual {
         bufferedWriter.write("\n"+move+","+turn);
         bufferedWriter.close();
     }
+
     //fileBefore.equals(fileAfter) 수행 후, 둘이 다르다면 inputFile실행해서 가장 마지막 줄 가져옴.
     public String inputFile(File f) throws FileNotFoundException   //대전파일에서 읽어옴
     {
@@ -446,8 +441,8 @@ public class DDual {
             }
             return 0;
         }
-
     }
+
     public boolean draw(Board chessBoard){ //퍼즐 성립 승리 조건 6가지 확인 후 진행 여부 판단.
         int wKingCount = 0;
         int wKnightcount = 0;

@@ -432,8 +432,6 @@ public class Menu {
          bufferedWriter.write(Main.userID); //한줄 입력
          bufferedWriter.newLine();//개행문자쓰기(엔터키 입력)
          bufferedWriter.write("_"); //상대 유져(파일 최초생성떄는 _로 적어놓음)
-//            bufferedWriter.newLine();//개행문자쓰기(엔터키 입력)
-//            bufferedWriter.write("null,null,1"); //움직임, 턴
 
 
          bufferedWriter.close();
