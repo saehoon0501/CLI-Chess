@@ -4,14 +4,14 @@ Java를 이용해 오프라인으로 같이 플레이 할 수 있는 Chess 게�
 jar를 Extract하여 cmd창에서 실행 가능하다.      
 
 ### 메뉴 화면
-로그인할 ID와 플레이할 모드를 선택할 수 있다.
+로그인할 ID와 플레이할 모드를 선택할 수 있다.       
 ![Main](Images/MainMenu.png)        
 
-1. 대전 메뉴
-![DualMenu](Images/DualMenu.png)
+1. 대전 메뉴        
+![DualMenu](Images/DualMenu.png)        
 
-2. 퍼즐 메뉴
-![PuzzleMenu](Images/PuzzleMenu.png)
+2. 퍼즐 메뉴        
+![PuzzleMenu](Images/PuzzleMenu.png)        
 
 ### 1. 대전 모드
 ![Dual](Images/Dual.png)
