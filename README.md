@@ -4,8 +4,8 @@ Java를 이용해 오프라인으로 같이 플레이 할 수 있는 Chess 게�
 jar를 Extract하여 cmd창에서 실행 가능하다.      
 
 ### 메뉴 화면
-   로그인할 ID와 플레이할 모드를 선택할 수 있다.     
-     
+   로그인할 ID 입력 후, 플레이할 모드를 선택할 수 있다.     
+
 ![Main](Images/MainMenu.png)        
 
 1. 대전 메뉴        
@@ -14,22 +14,64 @@ jar를 Extract하여 cmd창에서 실행 가능하다.
 2. 퍼즐 메뉴        
 ![PuzzleMenu](Images/PuzzleMenu.png)        
 
-### 1. 대전 모드
-![Dual](Images/Dual.png)
+### 1. 대전 모드        
+![Dual](Images/Dual.png)        
 
-두 명이서 대전 할 수 있는 모드\n
-유저 ID를 이용해 플레이했던 게임을 재접속 가능.
-대전 모드에 접속했던 유저ID가 동일해야지만 플레이 가능하다.
+두 명이서 대전 할 수 있는 모드      
+유저 ID를 이용해 플레이했던 게임을 재접속 가능.     
+대전 모드에 접속했던 유저ID가 동일해야지만 플레이 가능하다.     
+좌표 입력을 통해 기물들을 움직일 수 있다.       
+    
+    a2 a4 // a2의 기물을 a4로 움직임
 
-![PlayScreen](Images/Playscreen.png)
+이외 커맨드로는  Back, Exit, Next 존재.     
+
+![PlayScreen](Images/Playscreen.png)        
+
 P1와 P2의 대전 모드 실행화면        
 
-### 2. 퍼즐 모드
-직접 체스 퍼즐을 제작해 플레이할 수 있는 모드.
-제작 or 기존 퍼즐을 플레이 할 수 있다.
+### 2. 퍼즐 모드        
+직접 체스 퍼즐을 제작해 플레이할 수 있는 모드.      
+제작 or 기존 퍼즐을 플레이 할 수 있다.      
 
-1. 퍼즐 제작 모드
-[PuzzleMaker]
+1. 퍼즐 제작 모드     
+- 테마 선택     
+![Theme](Images/Theme.png)      
+
+1~3 숫자를 이용한 테마 선택으로 몇 수 안에 체크메이트를 만들지 결정하는 단계.       
+만약 MateIn1이면 흑백 각각 1턴 안에 게임이 끝나는 퍼즐을 말한다.        
+- 기물 배치     
+![Piece](Images/PieceSetting.png)       
+
+기물을 배치하여 퍼즐 형태를 만드는 단계         
+커맨드
+
+    기물 선택 형식 : <비개행공백열0><기물지정자>
+    기물 배치 형식 : <비개행공백열0><좌표입력>
+    이니셜 R    P    B      Q     K    N
+    풀네임 Rook Pawn Bishop Queen King Knignt
+    한글   룩   폰    비숍    퀸     킹   나이트
+    White
+    Black
+    Help
+    Back
+    Exit
+    Next
+
+
+- 정답 움직임 설정      
+![sol](Images/SolutionMove.png)         
+
+좌표입력을 통해 퍼즐 정답 움직임을 입력한다.        
+주어지는 턴 수는 테마 단계에 따라 나뉜다.       
+
+- 퍼즐 이름 설정        
+![Naming](Images/namingPuzzle.png)          
+퍼즐의 이름을 입력해준다.
 
 2. 퍼즐 플레이
-[PuzzlePlay](Images/PuzzlePlay.png)
+![PuzzlePlay](Images/PuzzlePlay.png)            
+
+좌표 입력을 통해 퍼즐을 해결해본다.
+
+커맨드
