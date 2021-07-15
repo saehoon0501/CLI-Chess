@@ -67,11 +67,12 @@ P1와 P2의 대전 모드 실행화면
 
 - 퍼즐 이름 설정        
 ![Naming](Images/namingPuzzle.png)          
-퍼즐의 이름을 입력해준다.
+퍼즐의 이름을 입력해준다.       
 
-2. 퍼즐 플레이
+2. 퍼즐 플레이          
 ![PuzzlePlay](Images/PuzzlePlay.png)            
 
-좌표 입력을 통해 퍼즐을 해결해본다.
+좌표 입력을 통해 퍼즐을 해결해본다.     
 
-커맨드
+커맨드      
+replay, hint, solution, next, previous, exit
