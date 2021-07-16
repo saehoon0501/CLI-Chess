@@ -10,10 +10,10 @@ jar를 Extract하여 cmd창에서 실행 가능함.
 
 ![Main](Images/MainMenu.png)        
 
-1. 대전 메뉴        
+1.1 대전 메뉴        
 ![DualMenu](Images/DualMenu.png)        
 
-2. 퍼즐 메뉴        
+1.2 퍼즐 메뉴        
 ![PuzzleMenu](Images/PuzzleMenu.png)        
 
 ## 2. 대전 모드        
