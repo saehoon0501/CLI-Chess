@@ -5,15 +5,15 @@ jar를 Extract하여 cmd창에서 실행 가능함.
 
 ## 구성 파일들      
 
-Board.java
-Controller.java
-DDual.java
-Gamepiece.java
-Main.java
-Menu.java
-Puzzle.java
-PuzzleControl.java
-PuzzleMain.java
+Board.java      
+Controller.java         
+DDual.java          
+Gamepiece.java          
+Main.java           
+Menu.java       
+Puzzle.java     
+PuzzleControl.java      
+PuzzleMain.java     
 
 ## 1. 메뉴 화면
    로그인할 ID 입력 후, 플레이할 모드를 선택할 수 있음.         
