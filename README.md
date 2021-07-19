@@ -21,7 +21,7 @@ Puzzle.java : 하나의 퍼즐 Object를 만드는 class로 퍼즐이 가지고 
 
 PuzzleControl.java : 하나의 퍼즐 Object를 제작하는 기능을 단계적으로 나타낸 class.      
 
-PuzzleMain.java : 퍼즐 메뉴로, 기존에 있는 퍼즐 파일 리스트 출력 및 퍼즐 제작 기능 선택 가능 class.      
+PuzzleMain.java : 퍼즐 메뉴, 기존에 있는 퍼즐 파일 리스트 출력 및 퍼즐 제작 기능 선택 가능 class.      
 
 ## 1. 메뉴 화면
    로그인할 ID 입력 후, 플레이할 모드를 선택할 수 있음.         
