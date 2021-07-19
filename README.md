@@ -5,15 +5,15 @@ jar를 Extract하여 cmd창에서 실행 가능함.
 
 ### 구성 파일들      
 
-Board.java      
-Controller.java         
-DDual.java          
-Gamepiece.java          
-Main.java           
-Menu.java       
-Puzzle.java     
-PuzzleControl.java      
-PuzzleMain.java     
+Board.java : 체커보드 class로 체스판을 2차원 배열로 나타냄.      
+Controller.java : 기물 class 입력 좌표 기물 위치로 변경 함수, 기물 움직임 처리 함수를 가짐.           
+DDual.java : 상대방과의 대전은 save file로 저장해 온라인으로도 플레이가 가능하게 해주는 class.           
+Gamepiece.java : 체스 기물들의 흑백, 기물 형태, 행마법을 가지는 class.          
+Main.java :           
+Menu.java :       
+Puzzle.java :     
+PuzzleControl.java :      
+PuzzleMain.java :     
 
 ## 1. 메뉴 화면
    로그인할 ID 입력 후, 플레이할 모드를 선택할 수 있음.         
