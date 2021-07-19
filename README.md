@@ -3,7 +3,7 @@ Java를 이용해 온라인으로 같이 플레이 할 수 있는 Chess 게임
 대전 모드, 퍼즐 모드 두 가지 존재함.      
 jar를 Extract하여 cmd창에서 실행 가능함.          
 
-## 구성 파일들      
+### 구성 파일들      
 
 Board.java      
 Controller.java         
