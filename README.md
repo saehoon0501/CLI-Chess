@@ -15,13 +15,13 @@ Gamepiece.java : 체스 기물들의 흑백, 기물 형태, 행마법을 가지�
 
 Main.java : 프로그램 entry point로 프로그램의 첫 진입 class.           
 
-Menu.java : 대전 메뉴와 퍼즐 메뉴 선택을 받고 대전 메뉴에서의 파일 리스트 출력 기능을 가지는 class.      
+Menu.java : 대전 메뉴와 퍼즐 메뉴 선택을 받고 대전 파일 생성 또는 리스트 출력 기능을 가지는 class.      
 
 Puzzle.java : 하나의 퍼즐 Object를 만드는 class로 퍼즐이 가지고 있는 각종 fields를 정의한 class.      
 
 PuzzleControl.java : 하나의 퍼즐 Object를 제작하는 기능을 단계적으로 나타낸 class.      
 
-PuzzleMain.java : 퍼즐 메뉴, 기존에 있는 퍼즐 파일 리스트 출력 및 퍼즐 제작 기능 선택 가능 class.      
+PuzzleMain.java : 퍼즐 메뉴, 기존에 있는 퍼즐 리스트 출력 및 퍼즐 제작 기능 선택 가능 class.      
 
 ## 1. 메뉴 화면
    로그인할 ID 입력 후, 플레이할 모드를 선택할 수 있음.         
